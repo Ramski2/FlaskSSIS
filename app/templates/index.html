@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Main Page</title>
+{% endblock %} 
+
+{% block body%}
+    <div class="card text-center shadow p-3">
+        {% if current_user.is_authenticated %}        
+            <div class="card-body">
+                <h2 class="card-title">Welcome, {{current_user.username}}</h2>
+                <h5 class="card-text">You can now edit the Database</h5>
+                <br>
+                <a href="{{ url_for('main.student')}}" class="btn btn-secondary btn-lg rounded-4">Student</a>
+            </div>
+        {% else %}
+            <div class="card-body">
+                <h2 class="card-title">Hello, Guest</h2>
+                <h5 class="card-text">Log in to edit data</h5>
+                <br>
+                <a href="{{ url_for('user.login_page')}}" class="btn btn-secondary btn-lg rounded-4">Log in</a>
+            </div>
+        {% endif %}
+
+    </div>
+{% endblock %}

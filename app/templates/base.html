@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    {% block title %}{% endblock%}
+</head>
+<body>
+    <nav class="navbar sticky-top bg-body-tertiary navbar-expand-lg border-bottom">
+        <div class="container-fluid">
+            <a class="navbar-brand fs-2 fw-bold" href="/">Student Info</a>
+            <div class="collapse navbar-collapse">
+                {% if current_user.is_authenticated %}
+                    <div class="ms-auto navbar-nav">
+                        <a class="nav-link">{{ current_user.username }}</a>
+                        <a class="nav-link" href="{{url_for('user.logout_page')}}">Logout</a>
+                    </div>
+                {% else %}
+                    <div class="ms-auto navbar-nav">
+                        <a class="nav-link" href="{{url_for('user.login_page')}}">Login</a>
+                        <a class="nav-link" href="{{url_for('user.register_page')}}">Register</a>
+                    </div>
+                {% endif %}
+            </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive" aria-controls="offcanvasResponsive"  aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-lg-2 bg-body-tertiary min-vh-100">
+                <aside class="bd-sidebar" style="top: 57px; position:sticky; z-index: 1100;">
+                    <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="offcanvasResponsive" aria-labelledby="offcanvasResponsiveLabel">
+                        <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasResponsiveLabel">Student Info</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasResponsive" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <nav class="navbar">
+                                {% if current_user.is_authenticated %}
+                                    <div class="navbar-nav">
+                                        <a class="nav-link fs-2 fw-bold" href="/"><i class="bi bi-house-door"></i> Home</a>
+                                        <a class="nav-link fs-4" href="{{url_for('main.student')}}"><i class="bi bi-people-fill"></i> Student</a>
+                                        <a class="nav-link fs-4" href="{{url_for('main.course')}}"><i class="bi bi-file-earmark-medical-fill"></i> Course</a>
+                                        <a class="nav-link fs-4" href="{{url_for('main.college')}}"><i class="bi bi-buildings"></i> College</a>
+                                    
+                                        <a class="nav-link fs-4"><i class="bi bi-person-square"></i> {{ current_user.username }}</a>
+                                        <a class="nav-link fs-4" href="{{url_for('user.logout_page')}}"><i class="bi bi-x-circle"></i> Logout</a>
+                                    </div>
+
+                                    {% else %}
+                                    <div class="navbar-nav">
+                                        <a class="nav-link fs-2 fw-bold" href="/"><i class="bi bi-house-door"></i>Home</a>
+                                        <a class="nav-link fs-4 disabled" href="#"><i class="bi bi-people-fill"></i> Student</a>
+                                        <a class="nav-link fs-4 disabled" href="#"><i class="bi bi-clipboard"></i> Course</a>
+                                        <a class="nav-link fs-4 disabled" href="#"><i class="bi bi-buildings"></i> College</a>
+                                
+                                        <a class="nav-link fs-4" href="{{url_for('user.login_page')}}">Login</a>
+                                        <a class="nav-link fs-4" href="{{url_for('user.register_page')}}">Register</a>
+                                    </div>
+                                    {% endif %}
+                            </nav>
+                        </div>
+                    </div>
+                </aside>
+                
+            </div>
+            <div class="col-12 col-lg-10">
+                <div class="content">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                    
+                                {% endfor %}
+                            {% endif %}
+                    {% endwith %}
+
+                    {% block body%}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Student Info</strong>
+                <small class="text-body-secondary">Just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body fs-5">
+                Did something successfully!
+            </div>
+        </div>
+    </div>
+    
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

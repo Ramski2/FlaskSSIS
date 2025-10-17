@@ -1,0 +1,140 @@
+{% extends "base.html"%}
+
+{% block body %}
+
+<button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
+
+<div id="carouselExample" class="carousel slide" data-bs-theme="dark">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <div class="table-responsive table-container m-4" style="max-height: 400px;">
+                        <table class="student-table table table-dark table-striped table-hover" >
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="color: gray;">#</th>
+                                    <th>Student ID</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Gender</th>
+                                    <th>Year Level</th>
+                                    <th>Course</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for std in stds %}
+                                <tr>
+                                    <td style="color: gray;">{{loop.index}}</td>
+                                    <td>{{std.id}}</td>
+                                    <td>{{std.first_name}}</td>
+                                    <td>{{std.last_name}}</td>
+                                    <td>{{std.gender}}</td>
+                                    <td>{{std.year_level}}</td>
+                                    <td>{{std.course_code}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+    </div>
+    <div class="carousel-item">
+      <div class="table-responsive table-container">
+                    <table class="program-table table table-dark table-striped table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Course Code</th>
+                                <th>Course Name</th>
+                                <th>College</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cor in crs%}
+                            <tr>    
+                                <td>{{cor.code}}</td>
+                                <td>{{cor.name}}</td>
+                                <td>{{cor.college_code}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+    </div>
+    <div class="carousel-item">
+      <div class="table-responsive table-container">
+                    <table class="college-table table table-dark table-striped table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>College Code</th>
+                                <th>College Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for clg in clgs%}
+                            <tr>    
+                                <td>{{clg.code}}</td>
+                                <td>{{clg.name}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+    <span aria-hidden="true"><i class="bi bi-chevron-left text-white"></i></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        Hello, world! This is a toast message.
+      </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Modal 1</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Show a second modal and hide this one with the button below.
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Open second modal</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Modal 2</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Hide this modal and show the first with the button below.
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Back to first</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Open first modal</button>
+
+
+<script type="module" src="{{ url_for('static', filename='js/test.js') }}"></script>
+
+{% endblock %}

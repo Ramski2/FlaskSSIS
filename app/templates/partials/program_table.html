@@ -1,0 +1,37 @@
+{% if crs %}
+{% for cor in crs%}
+    <tr data-id="{{ cor.code }}" class="align-middle"> 
+        <td style="color: gray;">{{loop.index + (page - 1) * 10}}</td>
+        <td>{{cor.code}}</td>
+        <td>{{cor.name}}</td>
+        <td>{{cor.college_code}}</td>
+        <td>
+            <div class="btn-group container-lg">
+                <button type="button" 
+                    class="btn btn-primary" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#editModal" 
+                    data-bs-name="Edit Course"
+                    data-bs-form="#ProgramForm"
+                    data-bs-id="{{ cor.code }}"
+                    data-bs-url="/program/edit/{{ cor.code }}">Edit</button>
+
+                <button type="button" class="btn btn-danger btn-del" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#confirmDeleteModal" 
+                    data-bs-id="{{ cor.code }}"
+                    data-bs-url="/program/delete/{{ cor.code }}"
+                    data-csrf-token="{{ csrf_token() }}">Delete</button>
+            </div>
+        </td>
+    </tr>
+{% endfor %}
+{% else %} 
+    <tr class="align-middle">
+        <td colspan="8" >
+            <div class="text-muted fs-3">
+                <i class="bi bi-info-circle"></i> No Courses found.
+            </div>
+        </td>
+    </tr>
+{% endif %}

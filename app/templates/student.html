@@ -1,0 +1,92 @@
+{% extends "subbase.html"%}
+
+{% block head %}
+    <title>Student table</title>
+{% endblock %}
+
+{% block header %}
+    <h1>Student Dashboard</h1>
+{% endblock %}
+
+{% block add %}
+<button type="button" 
+    class="btn btn-primary" 
+    data-bs-toggle="modal" 
+    data-bs-target="#addModal" 
+    data-bs-name="Add Student" 
+    data-bs-form="#StudentForm"
+    data-bs-url="/student/add">Add Student</button>
+{% endblock %}
+
+{% block th %}
+    <th scope="col">#</th>
+    <th scope="col">ID</th>
+    <th scope="col">First Name</th>
+    <th scope="col">Last Name</th>
+    <th scope="col">Gender</th>
+    <th scope="col">Year Level</th>
+    <th scope="col">Course</th>
+{% endblock %}
+
+{% block td %}
+<tbody id="table-body" data-url="/student/table">
+    {% include "partials/student_table.html" %}
+</tbody>
+{% endblock %}
+
+{% block addmodal %}
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ModalLabel">Add/Edit</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="StudentForm" method="POST" role="form" novalidate>
+                {{ form.hidden_tag() }}
+                <div class="modal-body">
+                    {% include "includes/student_form.html" %}
+                    <div class="mb-3">
+                        <p>Didn't find the course you need? <a href="{{ url_for('main.add_crs', next=url_for('main.student')) }}">Add one here</a></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block editmodal %}
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ModalLabel">Add/Edit</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="StudentForm" method="POST" role="form" novalidate>
+                {{ form.hidden_tag() }}
+                <div class="modal-body">
+                    {% include "includes/student_form.html" %}
+                    
+                </div>
+                <div class="ms-3 mb-3">
+                        <p>Didn't find the course you need? <a href="{{ url_for('main.add_crs', next=url_for('main.student')) }}">Add one here</a></p>
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}

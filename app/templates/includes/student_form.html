@@ -1,0 +1,54 @@
+    <p>Provide data to fields below.</p>
+
+    <div class="mb-3">
+        {{ form.id.label() }}
+        {{ form.id(class="form-control", id="id", placeholder="2025-0001")}}
+        {% for error in form.id.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3">
+        {{ form.first_name.label() }}
+        {{ form.first_name(class="form-control", placeholder="John")}}
+        {% for error in form.first_name.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+                    
+    <div class="mb-3">
+        {{ form.last_name.label() }}
+        {{ form.last_name(class="form-control", placeholder="Smith")}}
+        {% for error in form.last_name.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3">
+        {{ form.gender.label() }}
+        {{ form.gender(class="form-select")}}
+        {% for error in form.gender.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3">
+        {{ form.year_level.label() }}
+        {{ form.year_level(class="form-select")}}
+        {% for error in form.year_level.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3">
+        {{ form.course_code.label() }}
+        {{ form.course_code(class="form-select")}}
+        {% for error in form.course_code.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.8/dist/inputmask.min.js"></script>
+        <script>
+            Inputmask("9999-9999").mask("#id");
+        </script>

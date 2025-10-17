@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <div class="d-flex justify-content-center mt-5">
+        <div class="card" style="width: 30rem;">
+            <div class="card-body">
+                <form id="addingForm" method="post" data-url="{{ url }}" data-next="{{ next_url }}" novalidate>
+                {{ form.hidden_tag() }} 
+
+                    {% if table == "program"%}
+                        <h1 class="card-title">Add Course</h1>
+                        {% include "includes/program_form.html" %}
+                        <div class="mb-3">
+                            <p>Didn't find the college you need? <a href="{{ url_for('main.add_clg', next=url_for('main.add_crs')) }}">Add one here</a></p>
+                        </div>
+                    {% elif table == "college" %}
+                        <h1 class="card-title">Add College</h1>
+                        {% include "includes/college_form.html" %}
+                    {% else %}
+                        <h1 class="card-title">Add Student</h1>
+                        {% include "includes/student_form.html" %}
+                        <div class="mb-3">
+                            <p>Didn't find the course you need? <a href="{{ url_for('main.add_crs', next=url_for('main.add_std')) }}">Add one here</a></p>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-primary")}}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="{{ url_for('static', filename='js/crud/addNormForm.js') }}"></script>
+{% endblock %}

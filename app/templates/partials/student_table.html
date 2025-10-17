@@ -1,0 +1,41 @@
+
+{% if stds %}
+{% for std in stds %}     
+    <tr data-id="{{ std.id }}" class="align-middle">    
+        <td style="color: gray;">{{loop.index + (page - 1) * 10}}</td>
+        <td>{{std.id}}</td>
+        <td>{{std.first_name}}</td>
+        <td>{{std.last_name}}</td>
+        <td>{{std.gender}}</td>
+        <td>{{std.year_level}}</td>
+        <td>{{std.course_code}}</td>
+        <td>
+            <div class="btn-group container-lg">
+                <button type="button" 
+                    class="btn btn-primary" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#editModal" 
+                    data-bs-name="Edit Student"
+                    data-bs-form="#StudentForm"
+                    data-bs-id="{{ std.id }}"
+                    data-bs-url="/student/edit/{{ std.id }}">Edit</button>
+
+                <button type="button" class="btn btn-danger btn-del" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#confirmDeleteModal" 
+                    data-bs-id="{{ std.id }}"
+                    data-bs-url="/student/delete/{{ std.id }}"
+                    data-csrf-token="{{ csrf_token() }}">Delete</button>
+            </div>
+        </td>
+    </tr>
+{% endfor %}
+{% else %} 
+    <tr class="align-middle">
+        <td colspan="8">
+            <div class="text-muted fs-3">
+                <i class="bi bi-info-circle"></i> No students found.
+            </div>
+        </td>
+    </tr>
+{% endif %}

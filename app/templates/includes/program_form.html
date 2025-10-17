@@ -1,0 +1,17 @@
+        <p>Provide info in all fields below.</p>
+
+        <div class="mb-3">
+            {{ form.code.label(class='form-label') }}
+            {{ form.code(class="form-control", placeholder="BSCS")}}
+        </div>
+
+        <div class="mb-3">
+            {{ form.name.label(class='form-label') }}
+            {{ form.name(class="form-control", placeholder="Bachelor of Science in Computer Sciences")}}
+        </div>
+
+        <div class="mb-3">
+            {{ form.college_code.label() }}
+            {{ form.college_code(class="form-select") }}
+        </div>
+
