@@ -64,11 +64,19 @@ def add_clg():
     form = CollegeForm()
     
     next_url = request.args.get('next') or url_for('main.course')
-    url = "/program/add"
+    url = "/college/add"
     
     if request.method == "POST":
         if form.validate_on_submit():            
             try:
+                existing_code = models.College.get_specific_college(form.code.data)
+                if existing_code:
+                    return jsonify(success=False, error="College Code already exists."), 409
+                
+                existing_name = models.College.get_specific_college_name(form.name.data)
+                if existing_name:
+                    return jsonify(success=False, error="College name already exists."), 409
+                
                 college = models.College(form.code.data, form.name.data)
                 college.add()
                 return jsonify(success=True, message="College added successfully!")

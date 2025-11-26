@@ -27,6 +27,8 @@ export function addModal(modalSelector= "#addModal") {
                 return;
             }
 
+            console.log(form)
+
             const modalInstance = bootstrap.Modal.getOrCreateInstance(modalElement);
 
             const submitHandler = (e) => {

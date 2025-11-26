@@ -7,7 +7,7 @@ from . import user_bp
 @user_bp.route("/login", methods=['GET','POST'])
 def login_page():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
     
     form = LoginForm()
     if form.validate_on_submit():
@@ -33,6 +33,14 @@ def register_page():
     if request.method == "POST":
         if form.validate_on_submit():   
             try:
+                existing_user = models.User.get_specific_username(form.username.data)
+                if existing_user:
+                    return jsonify(success=False, error="Username already exists."), 409
+                
+                existing_email = models.User.get_specific_email(form.email.data)
+                if existing_email:
+                    return jsonify(success=False, error="Email already exists."), 409
+                
                 user = models.User(username=form.username.data, email=form.email.data, password=form.password1.data)
                 user.add()
                 return jsonify(success=True, message="Account created!")

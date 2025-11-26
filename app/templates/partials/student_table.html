@@ -4,6 +4,9 @@
     <tr data-id="{{ std.id }}" class="align-middle">    
         <td style="color: gray;">{{loop.index + (page - 1) * 10}}</td>
         <td>{{std.id}}</td>
+        <td>
+            <img src="{{ std.pfp_url }}" alt="Student Image" class="img-thumbnail" style="width:8rem; height:8rem; object-fit:cover;">
+        </td>
         <td>{{std.first_name}}</td>
         <td>{{std.last_name}}</td>
         <td>{{std.gender}}</td>

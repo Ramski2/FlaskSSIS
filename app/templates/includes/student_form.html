@@ -1,10 +1,30 @@
     <p>Provide data to fields below.</p>
 
+    <div class="mb-3 text-center">
+        <label>Current Image</label>
+        <div>
+            <img id="imagePreview" 
+                src="{{ student.image_url if student else '/static/noimage.png' }}" 
+                alt="Student Image" 
+                class="image-thumbnail"
+                style="width:150px; height:150px; object-fit:cover;">
+        </div>
+    </div>
     <div class="mb-3">
         {{ form.id.label() }}
         {{ form.id(class="form-control", id="id", placeholder="2025-0001")}}
         {% for error in form.id.errors %}
             <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+
+
+    <div class="mb-3">
+        {{ form.image.label(class="form-label") }}
+        {{ form.image(class="form-control", id="imageInput") }}
+        {% for error in form.image.errors %}
+            <div class="text-danger small">{{ error }}</div>
         {% endfor %}
     </div>
 
@@ -48,6 +68,17 @@
         {% endfor %}
     </div>
 
+    <script>
+        const fileInput = document.getElementById("imageInput");
+        const preview = document.getElementById("imagePreview");
+
+        fileInput.addEventListener("change", () => {
+            const file = fileInput.files[0];
+            if (file) {
+                preview.src = URL.createObjectURL(file);
+            }
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.8/dist/inputmask.min.js"></script>
         <script>
             Inputmask("9999-9999").mask("#id");

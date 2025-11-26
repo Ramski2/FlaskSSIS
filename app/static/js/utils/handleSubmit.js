@@ -4,6 +4,8 @@ import { showToast } from "./toast.js";
 export function handleFormSubmit(form, url, methods = "POST", modalInstance = null, next= null) {
     const formData = new FormData(form);
 
+    console.log(formData)
+
     const existingErrors = form.querySelectorAll(".text-danger.mt-1");
     existingErrors.forEach(el => el.remove());
 
@@ -42,8 +44,7 @@ export function handleFormSubmit(form, url, methods = "POST", modalInstance = nu
                     }
                 }
         } else if (data.error){
-            form.reset();
-            showToast("Someting went wrong..." + data.error, "danger")
+            showToast("Someting went wrong: " + data.error, "danger")
         }
     })
     .catch(error => showToast("Error submitting form: " + error, "danger"));

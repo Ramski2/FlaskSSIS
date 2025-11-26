@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     {% block title %}{% endblock%}
 </head>
-<body>
+<body style="min-height: 100vh;">
     <nav class="navbar sticky-top bg-body-tertiary navbar-expand-lg border-bottom">
         <div class="container-fluid">
             <a class="navbar-brand fs-2 fw-bold" href="/">Student Info</a>
@@ -34,7 +34,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12 col-lg-2 bg-body-tertiary min-vh-100">
+            <div class="col-12 col-lg-2 bg-body-tertiary">
                 <aside class="bd-sidebar" style="top: 57px; position:sticky; z-index: 1100;">
                     <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="offcanvasResponsive" aria-labelledby="offcanvasResponsiveLabel">
                         <div class="offcanvas-header">

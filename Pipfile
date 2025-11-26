@@ -7,6 +7,12 @@ name = "pypi"
 flask = "*"
 python-dotenv = "*"
 psycopg2 = "*"
+dotenv = "*"
+flask-login = "*"
+flask-wtf = "*"
+flask-bcrypt = "*"
+flask-bootstrap = "*"
+cloudinary = "*"
 
 [dev-packages]
 

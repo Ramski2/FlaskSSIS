@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, SearchField
+from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms.validators import Length, Email, EqualTo, DataRequired, Regexp
 
 class RegisterForm(FlaskForm):
@@ -19,6 +20,10 @@ class LoginForm(FlaskForm):
     
 class StudentForm(FlaskForm):
     id = StringField("Student ID", validators=[DataRequired(), Length(min=9, max=9), Regexp(r'^\d{4}-\d{4}$', message="Student ID must be YYYY-NNNN (e.g. 2025-0001)")])
+    image = FileField("Choose Image", validators=[
+        FileRequired(),
+        FileAllowed(["jpg", "jpeg", "png", "gif"], "Images only!")
+    ])
     first_name = StringField("First Name", validators=[DataRequired()])
     last_name = StringField("Last Name")
     gender = SelectField("Gender", choices=[('Male','Male'), ('Female', 'Female'), ('Other', 'Other'), ('Rather not say', 'Rather not say')])

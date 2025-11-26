@@ -2,8 +2,13 @@ from flask import flash, jsonify, render_template, request, url_for
 from flask_login import login_required
 from app import models
 from app.forms import StudentForm
+import cloudinary
+import cloudinary.uploader
 from app.utils import create_data_list, create_sort_list, get_page_range, search_params
 from . import main_bp
+
+DEFAULT_IMAGE_URL = "https://res.cloudinary.com/demo/image/upload/v1699481234/default-image.png"
+DEFAULT_PUBLIC_ID = "default-image"
 
 @main_bp.route("/student")
 @login_required
@@ -67,27 +72,42 @@ def load_students_filtered():
 def add_std():
     form = StudentForm()
     crs = models.Program.get_all()
-    
-    url = "/student/add"
-    
     form.course_code.choices = [(c['code'], f"{c['code']} - {c['name']}") for c in crs]
+
     if request.method == "POST":
-        if form.validate_on_submit():   
+        if form.validate_on_submit():
             try:
-                student = models.Student(form.id.data,
-                                        form.first_name.data, 
-                                        form.last_name.data, 
-                                        form.gender.data, 
-                                        form.year_level.data, 
-                                        form.course_code.data)
+                # Check if ID exists
+                if models.Student.get_specific_student(form.id.data):
+                    return jsonify(success=False, error="ID number already exists."), 409
+
+                # File upload
+                file = form.image.data
+                result = cloudinary.uploader.upload(file)
+                image_url = result.get("secure_url")
+                public_id = result.get("public_id")
+
+
+                # Create student
+                student = models.Student(
+                    form.id.data,
+                    image_url,
+                    public_id,
+                    form.first_name.data,
+                    form.last_name.data,
+                    form.gender.data,
+                    form.year_level.data,
+                    form.course_code.data
+                )
                 student.add()
+
                 return jsonify(success=True, message="Student added successfully!")
             except Exception as e:
                 return jsonify(success=False, error=str(e)), 500
         else:
             return jsonify(success=False, errors=form.errors), 400
-    else:
-        return render_template('add.html', form=form, table='students', url=url)    
+
+    return render_template('add.html', form=form, table='students', url="/student/add")
 
 
 @main_bp.route("/student/edit/<id>", methods=["GET", "PUT"])
@@ -106,7 +126,15 @@ def edit_std(id):
     if request.method == "PUT":
         if form.validate_on_submit():
             try:
+ 
+                file = form.image.data
+                result = cloudinary.uploader.upload(file)
+                image_url = result.get("secure_url")
+                public_id = result.get("public_id")
+                
                 models.Student.update(id, form.id.data,
+                                    image_url,
+                                    public_id,
                                     form.first_name.data,
                                     form.last_name.data,
                                     form.gender.data,
@@ -118,14 +146,13 @@ def edit_std(id):
         else:
             return jsonify(success=False, errors=form.errors), 400
 
-    return render_template('includes/student_form.html', form=form, table='students')
+    return render_template('includes/student_form.html', form=form, student=edit_data, table='students')
  
 @main_bp.route("/student/delete/<id>", methods=["DELETE"])
 @login_required
 def del_std(id):
-    
     try:
         models.Student.delete(id)
-        return jsonify({'success': True, 'message': 'Student deleted successfully.'})
+        return jsonify(success= True, message='Student deleted successfully.')
     except Exception as e:
-        return jsonify({'success': False, 'message': str(e)}), 500
+        return jsonify(success=False, error= str(e)), 500

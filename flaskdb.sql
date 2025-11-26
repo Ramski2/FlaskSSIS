@@ -28,6 +28,8 @@ CREATE TABLE IF NOT EXISTS program (
 
 CREATE TABLE IF NOT EXISTS students (
 	id VARCHAR(9) PRIMARY KEY,
+	pfp_url TEXT NOT NULL,
+	pfp_public_id TEXT NOT NULL,
 	first_name VARCHAR(200) NOT NULL,
 	last_name VARCHAR(200),
 	gender VARCHAR(50),

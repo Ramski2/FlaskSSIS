@@ -21,6 +21,7 @@
 {% block th %}
     <th scope="col">#</th>
     <th scope="col">ID</th>
+    <th scope="col">Image</th>
     <th scope="col">First Name</th>
     <th scope="col">Last Name</th>
     <th scope="col">Gender</th>
@@ -42,7 +43,7 @@
                 <h1 class="modal-title fs-5" id="ModalLabel">Add/Edit</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="StudentForm" method="POST" role="form" novalidate>
+            <form id="StudentForm" method="POST" role="form" enctype="multipart/form-data" novalidate>
                 {{ form.hidden_tag() }}
                 <div class="modal-body">
                     {% include "includes/student_form.html" %}

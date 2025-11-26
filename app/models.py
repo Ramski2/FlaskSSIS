@@ -29,6 +29,8 @@ def create_tables(filename):
     except Exception as e:
         print(f"An error occurred: {e}")
 
+
+
 class User(UserMixin):
     
     def __init__(self, id=None, username=None, email=None, password=None):
@@ -54,6 +56,18 @@ class User(UserMixin):
         cur = conn.cursor()
         query = f"SELECT * FROM users WHERE username = %s"
         cur.execute(query, (username,))
+        data = cur.fetchone()
+        cur.close()
+        if data:
+            return cls(id=data[0], username=data[1], email=data[2], password=data[3])
+        return None
+    
+    @classmethod
+    def get_specific_email(cls, email):
+        conn = get_db()
+        cur = conn.cursor()
+        query = f"SELECT * FROM users WHERE email = %s"
+        cur.execute(query, (email,))
         data = cur.fetchone()
         cur.close()
         if data:
@@ -116,8 +130,10 @@ class User(UserMixin):
 
 class Student():
     
-    def __init__(self, id=None, first_name=None, last_name=None, gender=None, year_level=None, course_code=None):
+    def __init__(self, id=None, image_url=None, image_public_id=None, first_name=None, last_name=None, gender=None, year_level=None, course_code=None):
         self.id = id
+        self.image_url = image_url
+        self.image_public_id = image_public_id
         self.first_name = first_name
         self.last_name = last_name
         self.gender = gender
@@ -145,21 +161,6 @@ class Student():
         return count
     
     @classmethod
-    def get_gender_demo(cls):
-        conn = get_db()
-        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        query = """
-                SELECT course_code,
-                       COUNT(*) FILTER (WHERE gender ILIKE 'male') AS male_count,
-                       COUNT(*) FILTER (WHERE gender ILIKE 'female') AS female_count
-                FROM students
-                GROUP BY course_code
-            """
-        cur.execute(query)
-        data = cur.fetchall()
-        cur.close()
-        return data
-    @classmethod
     def get_student_filtered(cls, search, sort, order, page, per_page):
         conn = get_db()
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -177,7 +178,7 @@ class Student():
         data = cur.fetchall()
         
         query2 = f"""SELECT COUNT(*) FROM students
-                    WHERE CONCAT_WS(' ', id, first_name, last_name, gender, year_level, course_code)
+                    WHERE CONCAT_WS(' ', id, pfp_url, pfp_public_id, first_name, last_name, gender, year_level, course_code)
                     ILIKE %s
                 """
                 
@@ -200,8 +201,23 @@ class Student():
     def add(self):
         conn = get_db()
         cur = conn.cursor()
-        query = "INSERT INTO students (id, first_name, last_name, gender, year_level, course_code) VALUES (%s, %s, %s, %s, %s, %s)"
-        cur.execute(query, (self.id, self.first_name, self.last_name, self.gender, self.year_level, self.course_code))
+        
+        query = """
+            INSERT INTO students 
+            (id, pfp_url, pfp_public_id, first_name, last_name, gender, year_level, course_code) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        """
+        data = (
+            self.id, 
+            self.image_url, 
+            self.image_public_id, 
+            self.first_name, 
+            self.last_name, 
+            self.gender, 
+            self.year_level, 
+            self.course_code
+        )
+        cur.execute(query, data)
         conn.commit()
         cur.close()
         
@@ -215,11 +231,11 @@ class Student():
         cur.close()
         
     @classmethod
-    def update(cls, orig_id, id, name1, name2, gender, y_lvl, course):
+    def update(cls, orig_id, id, image_url, image_public_id, name1, name2, gender, y_lvl, course):
         conn = get_db()
         cur = conn.cursor()
-        query = "UPDATE students SET id = %s, first_name = %s, last_name = %s, gender = %s, year_level = %s, course_code = %s WHERE id = %s"
-        cur.execute(query, (id, name1, name2, gender, y_lvl, course, orig_id))
+        query = "UPDATE students SET id = %s, pfp_url = %s, pfp_public_id = %s, first_name = %s, last_name = %s, gender = %s, year_level = %s, course_code = %s WHERE id = %s"
+        cur.execute(query, (id, image_url, image_public_id, name1, name2, gender, y_lvl, course, orig_id))
         conn.commit()
         cur.close()
         
@@ -284,6 +300,16 @@ class Program():
         conn = get_db()
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         query = f"SELECT * FROM program WHERE code = %s"
+        cur.execute(query, (code,))
+        data = cur.fetchone()
+        cur.close()
+        return data
+    
+    @classmethod
+    def get_specific_program_name(cls, code):
+        conn = get_db()
+        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        query = f"SELECT * FROM program WHERE name = %s"
         cur.execute(query, (code,))
         data = cur.fetchone()
         cur.close()
@@ -373,6 +399,16 @@ class College():
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         query = f"SELECT * FROM college WHERE code = %s"
         cur.execute(query, (code,))
+        data = cur.fetchone()
+        cur.close()
+        return data
+    
+    @classmethod
+    def get_specific_college_name(cls, name):
+        conn = get_db()
+        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        query = f"SELECT * FROM college WHERE name = %s"
+        cur.execute(query, (name,))
         data = cur.fetchone()
         cur.close()
         return data
