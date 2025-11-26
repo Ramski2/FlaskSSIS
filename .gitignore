@@ -71,7 +71,6 @@ Thumbs.db
 
 # Database / Flask-SQLAlchemy
 *.sqlite3
-flaskdb.sql  # if you don’t want to commit it
 
 # Environment / dependency files (optional if you want to keep Pipfile)
 .env
