@@ -5,19 +5,17 @@
         {% block header%}{% endblock %}
     </div>
 
-    <div class="container-xl">
+    <div class="container-xl mt-5">
         <div class="table-content">
             <div class="card">
-                <div class="card-header text-center ">
-                    <h5>Student table</h5>
+                <div class="card-header text-center py-2">
+                    {% block table_name %}{% endblock %}
                 </div>
                 <div class="card-body ">
                       <div class="row justify-content-between">
                         <div class="col-md-6">
                             <div class="container-fluid">
                                 <form role="search" method="get" class="row row-cols-sm-auto justify-content-center">
-                                    
-
                                     <div class="col-10">
                                         <div class="input-group mb-3">
                                             <input name="search" class="form-control" type="search" placeholder="Search..." aria-label="default input example">
@@ -74,7 +72,6 @@
                     </div>
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center">
-                            {% include "includes/pagination.html" %}
                         </ul>
                     </nav>
                 </div>

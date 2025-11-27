@@ -1,4 +1,4 @@
-import { fetchTable } from "./fetch_table.js";
+import { fetchTable } from "./fetch_table_filtered.js";
 
 export function handlePagination(paginationSelector = ".pagination") {
     const container = document.querySelector(paginationSelector);

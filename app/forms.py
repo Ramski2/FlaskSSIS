@@ -1,5 +1,7 @@
+from datetime import datetime
+import re
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, SearchField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, SearchField, ValidationError
 from wtforms.validators import Length, Email, EqualTo, DataRequired, Regexp
 
 class RegisterForm(FlaskForm):
@@ -25,6 +27,17 @@ class StudentForm(FlaskForm):
     year_level = SelectField("Year Level", choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4')], coerce=int)
     course_code = SelectField("Course")
     submit = SubmitField('Add Student')
+    
+    def validate_id(form, field):
+        pattern = r"^(\d{4})-(\d{4})$"
+        match = re.match(pattern, field.data)
+        if not match:
+            raise ValidationError("ID must be in format YYYY-NNNN")
+        
+        year = int(match.group(1))
+        current_year = datetime.now().year
+        if year < 1968 or year > current_year:
+            raise ValidationError(f"Year must be between 1968 and {current_year}")
     
 class ProgramForm(FlaskForm):
     code = StringField("Course Code", validators=[DataRequired()])

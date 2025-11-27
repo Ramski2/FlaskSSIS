@@ -1,29 +1,33 @@
     {% if clgs %}
     {% for clg in clgs%}
     <tr data-id="{{ clg.code }}" class="align-middle">
-        <td style="color: gray;">{{loop.index + (page - 1) * 10}}</td>
+        {% if editable %}
+            <td style="color: gray;">{{loop.index + (page - 1) * 10}}</td>
+        {% endif %}
         <td>{{clg.code}}</td>
         <td>{{clg.name}}</td>
-        <td>
-            <div class="btn-group container-lg">
-                <button type="button" 
-                    class="btn btn-primary" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#editModal" 
-                    data-bs-name="Edit College"
-                    data-bs-form="#CollegeForm"
-                    data-bs-id="{{ clg.code }}"
-                    data-bs-url="/college/edit/{{ clg.code }}">Edit</button>
+        {% if editable %}
+            <td>
+                <div class="btn-group container-lg">
+                    <button type="button" 
+                        class="btn btn-primary" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#editModal" 
+                        data-bs-name="Edit College"
+                        data-bs-form="#CollegeForm"
+                        data-bs-id="{{ clg.code }}"
+                        data-bs-url="/college/edit/{{ clg.code }}">Edit</button>
 
-                <button type="button" class="btn btn-danger btn-del" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#confirmDeleteModal" 
-                    data-bs-id="{{ clg.code }}"
-                    data-bs-url="/college/delete/{{ clg.code }}"
-                    data-csrf-token="{{ csrf_token() }}">Delete</button>
-            </div>
-            
-        </td>
+                    <button type="button" class="btn btn-danger btn-del" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#confirmDeleteModal" 
+                        data-bs-id="{{ clg.code }}"
+                        data-bs-url="/college/delete/{{ clg.code }}"
+                        data-csrf-token="{{ csrf_token() }}">Delete</button>
+                </div>
+                
+            </td>
+        {% endif %}
     </tr>
     {% endfor %}
     {% else %} 

@@ -8,6 +8,10 @@
     <h1>Student Dashboard</h1>
 {% endblock %}
 
+{% block table_name %}
+    <h3>Student Table</h3>
+{% endblock %}
+
 {% block add %}
 <button type="button" 
     class="btn btn-primary" 
@@ -30,7 +34,13 @@
 
 {% block td %}
 <tbody id="table-body" data-url="/student/table">
-    {% include "partials/student_table.html" %}
+    <tr class="align-middle">
+        <td colspan="8" >
+            <div class="text-muted fs-3">
+                <i class="bi bi-info-circle"></i> No Students found.
+            </div>
+        </td>
+    </tr>
 </tbody>
 {% endblock %}
 

@@ -8,33 +8,33 @@
   <div class="carousel-inner">
     <div class="carousel-item active">
       <div class="table-responsive table-container m-4" style="max-height: 400px;">
-                        <table class="student-table table table-dark table-striped table-hover" >
-                            <thead class="table-light">
-                                <tr>
-                                    <th style="color: gray;">#</th>
-                                    <th>Student ID</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Gender</th>
-                                    <th>Year Level</th>
-                                    <th>Course</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for std in stds %}
-                                <tr>
-                                    <td style="color: gray;">{{loop.index}}</td>
-                                    <td>{{std.id}}</td>
-                                    <td>{{std.first_name}}</td>
-                                    <td>{{std.last_name}}</td>
-                                    <td>{{std.gender}}</td>
-                                    <td>{{std.year_level}}</td>
-                                    <td>{{std.course_code}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+        <table class="student-table table table-dark table-striped table-hover" >
+              <thead class="table-light">
+                  <tr>
+                      <th style="color: gray;">#</th>
+                      <th>Student ID</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Gender</th>
+                      <th>Year Level</th>
+                      <th>Course</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for std in stds %}
+                  <tr>
+                      <td style="color: gray;">{{loop.index}}</td>
+                      <td>{{std.id}}</td>
+                      <td>{{std.first_name}}</td>
+                      <td>{{std.last_name}}</td>
+                      <td>{{std.gender}}</td>
+                      <td>{{std.year_level}}</td>
+                      <td>{{std.course_code}}</td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+        </table>
+      </div>
     </div>
     <div class="carousel-item">
       <div class="table-responsive table-container">

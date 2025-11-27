@@ -76,3 +76,5 @@ flaskdb.sql  # if you don’t want to commit it
 # Environment / dependency files (optional if you want to keep Pipfile)
 .env
 .env.*
+
+generate_students.py

@@ -10,36 +10,18 @@ from . import main_bp
 def student():
     form = StudentForm()
     table = "students"
-    page, per_page, search, sort, order = search_params(request, default_sort='id')
-
+    last_id = models.Student.get_last()
+    next_id = models.Student.increment_id(last_id)
+    
+    form.id.data = next_id
     sort_list = create_sort_list(table)
 
     crs = models.Program.get_all()
     form.course_code.choices = [(c['code'], f"{c['code']} - {c['name']}") for c in crs]
-    
-    try:
-        students, total = models.Student.get_student_filtered(search,
-                                                                  sort, order,
-                                                                  page, per_page)
-        page_range, total_pages = get_page_range(page, per_page, total)
         
-        return render_template('student.html',
-                                stds = students, 
-                                search=search, 
-                                sort=sort, 
-                                order=order, 
-                                page=page,
-                                page_range=page_range,
-                                total_pages= total_pages,
+    return render_template('student.html',
                                 crs_codes=crs, table = table, form=form,
                                 sort_list=sort_list)
-    except Exception as e:
-        flash(f"Error: {str(e)}", "danger")
-        return render_template('student.html',
-                               stds=[], search=search, sort=sort,
-                               order=order, page=page, page_range=[],
-                               total_pages=0, crs_codes=crs, table=table,
-                               form=form, sort_list=sort_list)
         
    
    
@@ -51,7 +33,7 @@ def load_students_filtered():
     students, total = models.Student.get_student_filtered(search, sort, order, page, per_page)
     page_range, total_pages = get_page_range(page, per_page, total)
     
-    table_html = render_template("partials/student_table.html", stds=students, page=page)
+    table_html = render_template("partials/student_table.html", stds=students, page=page, editable=True)
     paging_html = render_template("includes/pagination.html",page=page, page_range=page_range,
                                       total_pages=total_pages,
                                       search=search,
@@ -67,13 +49,18 @@ def load_students_filtered():
 def add_std():
     form = StudentForm()
     crs = models.Program.get_all()
-    
     url = "/student/add"
     
+    last_id = models.Student.get_last()
+    next_id = models.Student.increment_id(last_id)
+    
+    form.id.data = next_id
+    print(form.id.data)
     form.course_code.choices = [(c['code'], f"{c['code']} - {c['name']}") for c in crs]
     if request.method == "POST":
         if form.validate_on_submit():   
             try:
+                print(form.id.data)
                 student = models.Student(form.id.data,
                                         form.first_name.data, 
                                         form.last_name.data, 

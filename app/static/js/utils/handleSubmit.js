@@ -1,4 +1,4 @@
-import { fetchTable } from "./fetch_table.js";
+import { fetchTable } from "./fetch_table_filtered.js";
 import { showToast } from "./toast.js";
 
 export function handleFormSubmit(form, url, methods = "POST", modalInstance = null, next= null) {

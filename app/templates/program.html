@@ -8,6 +8,10 @@
     <h1>Course Dashboard</h1>
 {% endblock %}
 
+{% block table_name %}
+    <h3>Course Table</h3>
+{% endblock %}
+
 {% block add %}
 <button type="button" 
     class="btn btn-primary" 
@@ -28,7 +32,13 @@
 
 {% block td %}
 <tbody id="table-body" data-url="/program/table">
-    {% include "partials/program_table.html" %}
+    <tr class="align-middle">
+        <td colspan="8" >
+            <div class="text-muted fs-3">
+                <i class="bi bi-info-circle"></i> No Courses found.
+            </div>
+        </td>
+    </tr>
 </tbody>
     
 {% endblock %}

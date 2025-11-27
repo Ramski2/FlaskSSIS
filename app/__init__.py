@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from flask import Flask
 from flask_login import LoginManager
-from config import DB_USERNAME, DB_PASSWORD, DB_NAME, DB_HOST, DB_PORT, SECRET_KEY, BOOTSTRAP_SERVE_LOCAL
+from config import DB_USERNAME, DB_PASSWORD, DB_NAME, DB_HOST, DB_PORT, SECRET_KEY
 from flask_wtf.csrf import CSRFProtect
 from flask_bcrypt import Bcrypt
 from flask_bootstrap import Bootstrap
@@ -19,7 +19,6 @@ def create_app():
     app.config.from_mapping(
         SECRET_KEY = SECRET_KEY,
         DATABASE_URL=f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}",
-        #BOOTSTRAP_SERVE_LOCAL=BOOTSTRAP_SERVE_LOCAL 
     )
     login_manager.init_app(app)
     bcrypt.init_app(app)
@@ -31,6 +30,7 @@ def create_app():
     
     from .user import user_bp
     from .main import main_bp
+    
     
     app.register_blueprint(user_bp)
     app.register_blueprint(main_bp)

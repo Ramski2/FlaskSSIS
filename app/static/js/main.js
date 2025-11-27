@@ -1,7 +1,7 @@
 import { addModal } from "./crud/addModal.js";
 import { deleteData } from "./crud/delete.js";
 import { editModal } from "./crud/editModal.js";
-import { fetchTable } from "./utils/fetch_table.js";
+import { fetchTable } from "./utils/fetch_table_filtered.js";
 import { handlePagination } from "./utils/pagination.js";
 import { filter } from "./utils/searchFilter.js";
 

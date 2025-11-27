@@ -10,32 +10,10 @@ from . import main_bp
 def college():
     form = CollegeForm()
     table = "college"
-    page, per_page, search, sort, order = search_params(request, default_sort='code')
-
     sort_list = create_sort_list(table)
-    try:
-        colleges, total = models.College.get_college_filtered(search, sort, order, page, per_page)
-        page_range, total_pages = get_page_range(page, per_page, total)
-        
-        return render_template('college.html',
-                               clgs=colleges, 
-                               search=search, 
-                               sort=sort, 
-                               order=order, 
-                               page=page,
-                               page_range=page_range,
-                               total_pages= total_pages, table = table,
-                               form=form, sort_list=sort_list)
-    except Exception as e:
-        flash(f"Error: {str(e)}", "danger")
-        return render_template('college.html',
-                               clgs=[], 
-                               search=search, 
-                               sort=sort, 
-                               order=order, 
-                               page=page,
-                               page_range=[],
-                               total_pages= 0, table = table,
+    
+    return render_template('college.html',
+                               table = table,
                                form=form, sort_list=sort_list)
         
 @main_bp.route("/college/table")
@@ -46,7 +24,7 @@ def load_colleges_filtered():
     colleges, total = models.College.get_college_filtered(search, sort, order, page, per_page)
     page_range, total_pages = get_page_range(page, per_page, total)
     
-    table_html = render_template("partials/college_table.html", clgs=colleges, page=page)
+    table_html = render_template("partials/college_table.html", clgs=colleges, page=page, editable=True)
     paging_html = render_template("includes/pagination.html",page=page, page_range=page_range,
                                       total_pages=total_pages,
                                       search=search,
