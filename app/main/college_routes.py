@@ -42,7 +42,7 @@ def add_clg():
     form = CollegeForm()
     
     next_url = request.args.get('next') or url_for('main.course')
-    url = "/program/add"
+    url = "/college/add"
     
     if request.method == "POST":
         if form.validate_on_submit():            
