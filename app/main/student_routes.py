@@ -7,18 +7,14 @@ import cloudinary.uploader
 from app.utils import create_data_list, create_sort_list, get_page_range, search_params
 from . import main_bp
 
-DEFAULT_IMAGE_URL = "https://res.cloudinary.com/demo/image/upload/v1699481234/default-image.png"
-DEFAULT_PUBLIC_ID = "default-image"
+DEFAULT_IMAGE_URL = "https://res.cloudinary.com/dgira6yxf/image/upload/v1765614396/dvdqkqprn0quoo0tppii.png"
+DEFAULT_PUBLIC_ID = "dvdqkqprn0quoo0tppii"
 
 @main_bp.route("/student")
 @login_required
 def student():
     form = StudentForm()
     table = "students"
-    last_id = models.Student.get_last()
-    next_id = models.Student.increment_id(last_id)
-    
-    form.id.data = next_id
     sort_list = create_sort_list(table)
 
     crs = models.Program.get_all()
@@ -56,28 +52,20 @@ def add_std():
     crs = models.Program.get_all()
     url = "/student/add"
     
-    last_id = models.Student.get_last()
-    next_id = models.Student.increment_id(last_id)
-    
-    form.id.data = next_id
     print(form.id.data)
     form.course_code.choices = [(c['code'], f"{c['code']} - {c['name']}") for c in crs]
 
     if request.method == "POST":
         if form.validate_on_submit():
             try:
-                # Check if ID exists
                 if models.Student.get_specific_student(form.id.data):
                     return jsonify(success=False, error="ID number already exists."), 409
 
-                # File upload
                 file = form.image.data
                 result = cloudinary.uploader.upload(file)
                 image_url = result.get("secure_url")
                 public_id = result.get("public_id")
 
-
-                # Create student
                 student = models.Student(
                     form.id.data,
                     image_url,

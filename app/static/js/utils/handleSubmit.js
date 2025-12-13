@@ -6,6 +6,9 @@ export function handleFormSubmit(form, url, methods = "POST", modalInstance = nu
 
     console.log(formData)
 
+    const submitBtn = form.querySelector("[type='submit']");
+    if(submitBtn) submitBtn.disabled = true;
+
     const existingErrors = form.querySelectorAll(".text-danger.mt-1");
     existingErrors.forEach(el => el.remove());
 
@@ -31,7 +34,9 @@ export function handleFormSubmit(form, url, methods = "POST", modalInstance = nu
             } else {
                 window.location.href = next;
             }
+            submitBtn.disabled = true;
         } else if (data.errors) {
+            submitBtn.disabled = true;
                 for (const fieldName in data.errors) {
                     const field = form.querySelector(`[name="${fieldName}"]`);
                     if (field) {
@@ -42,6 +47,7 @@ export function handleFormSubmit(form, url, methods = "POST", modalInstance = nu
                     }
                 }
         } else if (data.error){
+            submitBtn.disabled = true;
             showToast("Someting went wrong: " + data.error, "danger")
         }
     })

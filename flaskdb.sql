@@ -28,8 +28,8 @@ CREATE TABLE IF NOT EXISTS program (
 
 CREATE TABLE IF NOT EXISTS students (
 	id VARCHAR(9) PRIMARY KEY,
-	pfp_url TEXT NOT NULL,
-	pfp_public_id TEXT NOT NULL,
+	image_url TEXT,
+	image_public_id TEXT,
 	first_name VARCHAR(200) NOT NULL,
 	last_name VARCHAR(200),
 	gender VARCHAR(50),
@@ -41,3 +41,5 @@ CREATE TABLE IF NOT EXISTS students (
 		ON UPDATE CASCADE
 	
 );
+
+\copy students FROM 'C:\Users\Admin\VSCode\PythonProjects\FlaskProjects\SSIS\New folder\FlaskSSIS\example_csv\students.csv' WITH (FORMAT csv);

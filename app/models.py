@@ -201,7 +201,7 @@ class Student():
         data = cur.fetchall()
         
         query2 = f"""SELECT COUNT(*) FROM students
-                    WHERE CONCAT_WS(' ', id, pfp_url, pfp_public_id, first_name, last_name, gender, year_level, course_code)
+                    WHERE CONCAT_WS(' ', id, image_url, image_public_id, first_name, last_name, gender, year_level, course_code)
                     ILIKE %s
                 """
                 
@@ -227,7 +227,7 @@ class Student():
         
         query = """
             INSERT INTO students 
-            (id, pfp_url, pfp_public_id, first_name, last_name, gender, year_level, course_code) 
+            (id, image_url, image_public_id, first_name, last_name, gender, year_level, course_code) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         """
         data = (
@@ -257,7 +257,7 @@ class Student():
     def update(cls, orig_id, id, image_url, image_public_id, name1, name2, gender, y_lvl, course):
         conn = get_db()
         cur = conn.cursor()
-        query = "UPDATE students SET id = %s, pfp_url = %s, pfp_public_id = %s, first_name = %s, last_name = %s, gender = %s, year_level = %s, course_code = %s WHERE id = %s"
+        query = "UPDATE students SET id = %s, image_url = %s, image_public_id = %s, first_name = %s, last_name = %s, gender = %s, year_level = %s, course_code = %s WHERE id = %s"
         cur.execute(query, (id, image_url, image_public_id, name1, name2, gender, y_lvl, course, orig_id))
         conn.commit()
         cur.close()
