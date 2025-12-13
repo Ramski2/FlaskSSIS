@@ -1,63 +1,69 @@
     <p>Provide data to fields below.</p>
 
-    <div class="mb-3 text-center">
-        <label>Current Image</label>
-        <div>
-            <img id="imagePreview" 
-                src="{{ student.image_url if student else '/static/noimage.png' }}" 
-                alt="Student Image" 
-                class="image-thumbnail"
-                style="width:150px; height:150px; object-fit:cover;">
+    <div class="row mb-3">
+        <div class="col-sm-6 text-center">
+            <label>Current Image</label>
+            <div>
+                <img id="imagePreview" 
+                    src="{{ student.image_url if student else '/static/noimage.png' }}" 
+                    alt="Student Image" 
+                    class="image-thumbnail"
+                    style="width:150px; height:150px; object-fit:cover;">
+            </div>
+        </div>
+                        
+        <div class="col-sm-6">
+            <div class="mb-3">
+                {{ form.image.label(class="form-label") }}
+                {{ form.image(class="form-control", id="imageInput") }}
+                {% for error in form.image.errors %}
+                    <div class="text-danger small">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.id.label() }}
+                {{ form.id(class="form-control", id="id", placeholder="2025-0001")}}
+                {% for error in form.id.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
         </div>
     </div>
-    <div class="mb-3">
-        {{ form.id.label() }}
-        {{ form.id(class="form-control", id="id", placeholder="2025-0001")}}
-        {% for error in form.id.errors %}
-            <div class="text-danger">{{ error }}</div>
-        {% endfor %}
+
+    <div class="row mb-3">
+        <div class="col-sm-6">
+            {{ form.first_name.label() }}
+            {{ form.first_name(class="form-control", placeholder="John")}}
+            {% for error in form.first_name.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+                        
+        <div class="col-sm-6">
+            {{ form.last_name.label() }}
+            {{ form.last_name(class="form-control", placeholder="Smith")}}
+            {% for error in form.last_name.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
     </div>
 
-
-
-    <div class="mb-3">
-        {{ form.image.label(class="form-label") }}
-        {{ form.image(class="form-control", id="imageInput") }}
-        {% for error in form.image.errors %}
-            <div class="text-danger small">{{ error }}</div>
-        {% endfor %}
-    </div>
-
-    <div class="mb-3">
-        {{ form.first_name.label() }}
-        {{ form.first_name(class="form-control", placeholder="John")}}
-        {% for error in form.first_name.errors %}
-            <div class="text-danger">{{ error }}</div>
-        {% endfor %}
-    </div>
-                    
-    <div class="mb-3">
-        {{ form.last_name.label() }}
-        {{ form.last_name(class="form-control", placeholder="Smith")}}
-        {% for error in form.last_name.errors %}
-            <div class="text-danger">{{ error }}</div>
-        {% endfor %}
-    </div>
-
-    <div class="mb-3">
-        {{ form.gender.label() }}
-        {{ form.gender(class="form-select")}}
-        {% for error in form.gender.errors %}
-            <div class="text-danger">{{ error }}</div>
-        {% endfor %}
-    </div>
-
-    <div class="mb-3">
-        {{ form.year_level.label() }}
-        {{ form.year_level(class="form-select")}}
-        {% for error in form.year_level.errors %}
-            <div class="text-danger">{{ error }}</div>
-        {% endfor %}
+    <div class="row mb-3">
+        <div class="col-sm-6">
+            {{ form.gender.label() }}
+            {{ form.gender(class="form-select")}}
+            {% for error in form.gender.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+                        
+        <div class="col-sm-6">
+            {{ form.year_level.label() }}
+            {{ form.year_level(class="form-select")}}
+            {% for error in form.year_level.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
     </div>
 
     <div class="mb-3">
@@ -68,17 +74,6 @@
         {% endfor %}
     </div>
 
-    <script>
-        const fileInput = document.getElementById("imageInput");
-        const preview = document.getElementById("imagePreview");
-
-        fileInput.addEventListener("change", () => {
-            const file = fileInput.files[0];
-            if (file) {
-                preview.src = URL.createObjectURL(file);
-            }
-        });
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.8/dist/inputmask.min.js"></script>
         <script>
             Inputmask("9999-9999").mask("#id");

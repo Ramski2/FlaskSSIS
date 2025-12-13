@@ -7,10 +7,15 @@
         {% else %}
         <td style="color: gray;">{{loop.index}}</td>
         {% endif %}
-        <td>{{std.id}}</td>
         <td>
-            <img src="{{ std.image_url }}" alt="Student Image" class="img-thumbnail" style="width:3rem; height:3rem; object-fit:cover;">
+            <a type="button"  
+                data-bs-toggle="modal" 
+                data-bs-target="#showImage"
+                data-bs-url="/student/image/{{std.id}}">
+                <img src="{{ std.image_url }}" alt="Student Image" class="img-thumbnail" style="width:3rem; height:3rem; object-fit:cover;">
+            </a>
         </td>
+        <td>{{std.id}}</td>
         <td>{{std.first_name}}</td>
         <td>{{std.last_name}}</td>
         <td>{{std.gender}}</td>

@@ -144,7 +144,7 @@ class Student():
     def get_all(cls):
         conn = get_db()
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        query = f"SELECT * FROM students"
+        query = f"SELECT * FROM students ORDER BY id ASC"
         cur.execute(query)
         data = cur.fetchall()
         cur.close()
@@ -154,7 +154,7 @@ class Student():
     def get_last(cls):
         conn = get_db()
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        query = f"SELECT id FROM students ORDER BY id desc LIMIT 1"
+        query = f"SELECT id FROM students ORDER BY id DESC LIMIT 1"
         cur.execute(query)
         data = cur.fetchone()
         
@@ -274,7 +274,7 @@ class Program():
     def get_all(cls):
         conn = get_db()
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        query = "SELECT * FROM program"
+        query = "SELECT * FROM program ORDER BY code ASC"
         cur.execute(query)
         data = cur.fetchall()
         cur.close()
@@ -373,7 +373,7 @@ class College():
     def get_all(cls):
         conn = get_db()
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        query = f"SELECT * FROM college"
+        query = f"SELECT * FROM college ORDER BY code ASC"
         cur.execute(query)
         data = cur.fetchall()
         cur.close()

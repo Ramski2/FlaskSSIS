@@ -23,9 +23,9 @@
 {% endblock %}
 
 {% block th %}
-    <th scope="col">#</th>
-    <th scope="col">ID</th>
+    <th scope="col" style="color: gray;">#</th>
     <th scope="col">Image</th>
+    <th scope="col">ID</th>
     <th scope="col">First Name</th>
     <th scope="col">Last Name</th>
     <th scope="col">Gender</th>
@@ -47,7 +47,7 @@
 
 {% block addmodal %}
 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="ModalLabel">Add/Edit</h1>
@@ -73,7 +73,7 @@
 
 {% block editmodal %}
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="ModalLabel">Add/Edit</h1>
@@ -98,6 +98,32 @@
 </div>
 {% endblock %}
 
+{% block showImage %}
+<div class="modal fade" id="showImage" tabindex="-1" aria-labelledby="showImageLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <form id="StudentForm" method="POST" role="form" novalidate>
+                {{ form.hidden_tag() }}
+                <div class="modal-body flex justify-content-center">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
 {% block script %}
+<script>
+    const fileInput = document.getElementById("imageInput");
+    const preview = document.getElementById("imagePreview");
+
+    fileInput.addEventListener("change", () => {
+        const file = fileInput.files[0];
+        if (file) {
+            preview.src = URL.createObjectURL(file);
+        }
+    });
+</script>
+<script type="module" src="{{ url_for('static', filename='js/utils/showImage.js') }}"></script>
 <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}

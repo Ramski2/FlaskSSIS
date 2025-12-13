@@ -31,7 +31,7 @@ class StudentForm(FlaskForm):
     gender = SelectField("Gender", choices=[('Male','Male'), ('Female', 'Female'), ('Other', 'Other'), ('Rather not say', 'Rather not say')])
     year_level = SelectField("Year Level", choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4')], coerce=int)
     course_code = SelectField("Course")
-    submit = SubmitField('Add Student')
+    submit = SubmitField('Add/Edit Student')
     
     def validate_id(form, field):
         pattern = r"^(\d{4})-(\d{4})$"
@@ -48,12 +48,12 @@ class ProgramForm(FlaskForm):
     code = StringField("Course Code", validators=[DataRequired()])
     name = StringField("Course Name", validators=[DataRequired()])
     college_code = SelectField("College")
-    submit = SubmitField('Add Course')
+    submit = SubmitField('Add/Edit Course')
     
 class CollegeForm(FlaskForm):
     code = StringField("College Code", validators=[DataRequired()])
     name = StringField("College Name", validators=[DataRequired()])
-    submit = SubmitField('Add College')
+    submit = SubmitField('Add/Edit College')
     
 class SearchForm(FlaskForm):
     search = SearchField("Search")

@@ -44,13 +44,24 @@ def load_students_filtered():
         "table": table_html,
         "pagination": paging_html
     })
+    
+@main_bp.route("/student/image/<id>")
+@login_required
+def load_students_image(id):
+    try:
+        student = models.Student.get_specific_student(id)
+        if not student:
+            return jsonify(success=False, error="Student Not Found")
+        
+        return render_template("includes/image.html", std=student)
+    except Exception as e:
+        return jsonify(success=False, error=str(e))
          
 @main_bp.route("/student/add", methods=["GET", "POST"])
 @login_required
 def add_std():
     form = StudentForm()
     crs = models.Program.get_all()
-    url = "/student/add"
     
     print(form.id.data)
     form.course_code.choices = [(c['code'], f"{c['code']} - {c['name']}") for c in crs]

@@ -6,8 +6,9 @@ export function handleFormSubmit(form, url, methods = "POST", modalInstance = nu
 
     console.log(formData)
 
-    const submitBtn = form.querySelector("[type='submit']");
-    if(submitBtn) submitBtn.disabled = true;
+    Array.from(form.elements).forEach(element => {
+        element.disabled = true
+    })
 
     const existingErrors = form.querySelectorAll(".text-danger.mt-1");
     existingErrors.forEach(el => el.remove());
@@ -21,6 +22,9 @@ export function handleFormSubmit(form, url, methods = "POST", modalInstance = nu
         if (data.success) {
             form.reset();
             showToast(data.message, "success");
+            Array.from(form.elements).forEach(element => {
+                element.disabled = false
+            })
             if(modalInstance?.hide){
                 modalInstance.hide();
                 const searchForm = document.querySelector("form[role='search']");
@@ -34,9 +38,13 @@ export function handleFormSubmit(form, url, methods = "POST", modalInstance = nu
             } else {
                 window.location.href = next;
             }
-            submitBtn.disabled = true;
+            Array.from(form.elements).forEach(element => {
+                element.disabled = false
+            })
         } else if (data.errors) {
-            submitBtn.disabled = true;
+            Array.from(form.elements).forEach(element => {
+                element.disabled = false
+            })
                 for (const fieldName in data.errors) {
                     const field = form.querySelector(`[name="${fieldName}"]`);
                     if (field) {
@@ -47,7 +55,9 @@ export function handleFormSubmit(form, url, methods = "POST", modalInstance = nu
                     }
                 }
         } else if (data.error){
-            submitBtn.disabled = true;
+            Array.from(form.elements).forEach(element => {
+                element.disabled = false
+            })
             showToast("Someting went wrong: " + data.error, "danger")
         }
     })
