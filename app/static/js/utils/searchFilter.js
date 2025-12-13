@@ -1,4 +1,4 @@
-import { fetchTable } from "./fetch_table.js";
+import { fetchTable } from "./fetch_table_filtered.js";
 
 export function filter(formSelector = "form[role='search']"){
     const search_form = document.querySelector(formSelector)

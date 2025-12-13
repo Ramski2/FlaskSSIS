@@ -8,13 +8,15 @@ flask = "*"
 python-dotenv = "*"
 psycopg2 = "*"
 dotenv = "*"
+faker = "*"
 flask-login = "*"
 flask-wtf = "*"
 flask-bcrypt = "*"
 flask-bootstrap = "*"
 cloudinary = "*"
+email-validator = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.13"
+python_version = "3.14"

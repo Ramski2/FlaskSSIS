@@ -12,6 +12,10 @@ def login_page():
     form = LoginForm()
     if form.validate_on_submit():
         attempted_user = models.User.get_specific_username(username=form.username.data)
+        if not attempted_user:
+            flash("Account does not exist!", "danger")
+            return render_template('login.html', login_form=form)
+        
         if attempted_user and attempted_user.check_password(password_attempt=form.password.data):
             login_user(attempted_user, remember=form.remember.data)
             
@@ -21,7 +25,8 @@ def login_page():
             flash(f"You are now logged in as {current_user.username}", "success")
             return redirect(next_page)
         else:
-            flash("Wrong username or password! Please try again", 'danger')
+            flash("Wrong password! Please try again", 'danger')
+            
     return render_template('login.html', login_form=form)
 
 @user_bp.route("/register", methods = ['GET', 'POST'])

@@ -149,6 +149,29 @@ class Student():
         data = cur.fetchall()
         cur.close()
         return data
+
+    @classmethod   
+    def get_last(cls):
+        conn = get_db()
+        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        query = f"SELECT id FROM students ORDER BY id desc LIMIT 1"
+        cur.execute(query)
+        data = cur.fetchone()
+        
+        if data:
+            last_id = data['id']
+        else:
+            from datetime import datetime
+            last_id = f"{datetime.now().year}-0000"
+            
+        cur.close()
+        return last_id
+    
+    def increment_id(last_id):
+        year, num = last_id.split("-")
+        new_num = int(num) + 1
+        new_id = f"{year}-{new_num:04d}"
+        return new_id
     
     @classmethod   
     def get_count(cls):

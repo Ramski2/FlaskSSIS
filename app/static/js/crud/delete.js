@@ -1,4 +1,4 @@
-import { fetchTable } from "../utils/fetch_table.js";
+import { fetchTable } from "../utils/fetch_table_filtered.js";
 import { showToast } from "../utils/toast.js";
 
 export function deleteData(modalSelector = "#confirmDeleteModal"){

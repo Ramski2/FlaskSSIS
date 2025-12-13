@@ -75,3 +75,5 @@ Thumbs.db
 # Environment / dependency files (optional if you want to keep Pipfile)
 .env
 .env.*
+
+generate_students.py

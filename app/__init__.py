@@ -20,7 +20,6 @@ def create_app():
     app.config.from_mapping(
         SECRET_KEY = SECRET_KEY,
         DATABASE_URL=f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}",
-        #BOOTSTRAP_SERVE_LOCAL=BOOTSTRAP_SERVE_LOCAL 
     )
     
     cloudinary.config(
@@ -41,9 +40,8 @@ def create_app():
     from .user import user_bp
     from .main import main_bp
     
+    
     app.register_blueprint(user_bp)
     app.register_blueprint(main_bp)
     
     return app
-    
-    

@@ -1,8 +1,12 @@
 
 {% if stds %}
 {% for std in stds %}     
-    <tr data-id="{{ std.id }}" class="align-middle">    
+    <tr data-id="{{ std.id }}" class="align-middle">
+        {% if editable %}
         <td style="color: gray;">{{loop.index + (page - 1) * 10}}</td>
+        {% else %}
+        <td style="color: gray;">{{loop.index}}</td>
+        {% endif %}
         <td>{{std.id}}</td>
         <td>
             <img src="{{ std.pfp_url }}" alt="Student Image" class="img-thumbnail" style="width:8rem; height:8rem; object-fit:cover;">
@@ -12,32 +16,34 @@
         <td>{{std.gender}}</td>
         <td>{{std.year_level}}</td>
         <td>{{std.course_code}}</td>
-        <td>
-            <div class="btn-group container-lg">
-                <button type="button" 
-                    class="btn btn-primary" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#editModal" 
-                    data-bs-name="Edit Student"
-                    data-bs-form="#StudentForm"
-                    data-bs-id="{{ std.id }}"
-                    data-bs-url="/student/edit/{{ std.id }}">Edit</button>
+        {% if editable %}
+            <td>
+                <div class="btn-group container-lg">
+                    <button type="button" 
+                        class="btn btn-primary" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#editModal" 
+                        data-bs-name="Edit Student"
+                        data-bs-form="#StudentForm"
+                        data-bs-id="{{ std.id }}"
+                        data-bs-url="/student/edit/{{ std.id }}">Edit</button>
 
-                <button type="button" class="btn btn-danger btn-del" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#confirmDeleteModal" 
-                    data-bs-id="{{ std.id }}"
-                    data-bs-url="/student/delete/{{ std.id }}"
-                    data-csrf-token="{{ csrf_token() }}">Delete</button>
-            </div>
-        </td>
+                    <button type="button" class="btn btn-danger btn-del" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#confirmDeleteModal" 
+                        data-bs-id="{{ std.id }}"
+                        data-bs-url="/student/delete/{{ std.id }}"
+                        data-csrf-token="{{ csrf_token() }}">Delete</button>
+                </div>
+            </td>
+        {% endif %}
     </tr>
 {% endfor %}
 {% else %} 
     <tr class="align-middle">
         <td colspan="8">
             <div class="text-muted fs-3">
-                <i class="bi bi-info-circle"></i> No students found.
+                <i class="bi bi-info-circle"></i> No Students found.
             </div>
         </td>
     </tr>

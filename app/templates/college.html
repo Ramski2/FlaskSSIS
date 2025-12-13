@@ -1,11 +1,15 @@
 {% extends "subbase.html"%}
 
 {% block head %}
-    <title>Course table</title>
+    <title>College table</title>
 {% endblock %}
 
 {% block header %}
-    <h1>Course Dashboard</h1>
+    <h1>College Dashboard</h1>
+{% endblock %}
+
+{% block table_name %}
+    <h3>College Table</h3>
 {% endblock %}
 
 {% block add %}
@@ -27,7 +31,13 @@
 
 {% block td %}
 <tbody id="table-body" data-url="/college/table">
-    {% include "partials/college_table.html" %}
+    <tr class="align-middle">
+        <td colspan="8" >
+            <div class="text-muted fs-3">
+                <i class="bi bi-info-circle"></i> No Colleges found.
+            </div>
+        </td>
+    </tr>
 </tbody>  
 {% endblock %}
 
