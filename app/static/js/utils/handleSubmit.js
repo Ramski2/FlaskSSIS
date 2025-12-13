@@ -15,22 +15,20 @@ export function handleFormSubmit(form, url, methods = "POST", modalInstance = nu
     .then(data => {
         if (data.success) {
             form.reset();
+            showToast(data.message, "success");
             if(modalInstance?.hide){
                 modalInstance.hide();
+                const searchForm = document.querySelector("form[role='search']");
+                const params = searchForm
+                    ? new URLSearchParams(new FormData(searchForm)).toString()
+                    : "";
+
+                fetchTable(params);
             } else if(!next) {
                 window.location.href = "/student";
             } else {
                 window.location.href = next;
             }
-            
-            showToast(data.message, "success");
-
-            const searchForm = document.querySelector("form[role='search']");
-            const params = searchForm
-                ? new URLSearchParams(new FormData(searchForm)).toString()
-                : "";
-
-            fetchTable(params);
         } else if (data.errors) {
                 for (const fieldName in data.errors) {
                     const field = form.querySelector(`[name="${fieldName}"]`);
