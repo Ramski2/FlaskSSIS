@@ -31,7 +31,31 @@ export function editModal(modalSelector= "#editModal") {
             .then(html => {
                 container.innerHTML = html;
                 console.log('changed');
-                const form = modalElement.querySelector(formSelector);
+
+                
+                const form = modalElement.querySelector(formSelector); 
+                const fileInput = form.querySelector("#imageInput");
+                const preview = form.querySelector("#imagePreview");
+
+                if (fileInput && preview) {
+                    const originalSrc = preview.src;
+                    fileInput.addEventListener("change", function () {
+                        const file = this.files[0];
+                        if (!file) {
+                            preview.src = originalSrc;
+                            return;
+                        }
+                        if (!file.type.startsWith("image/")) {
+                            alert("Please select an image file");
+                            this.value = "";
+                            preview.src = originalSrc;
+                            return;
+                        }
+                        const objectUrl = URL.createObjectURL(file);
+                        preview.src = objectUrl;
+                        preview.onload = () => URL.revokeObjectURL(objectUrl);
+                    });
+                }
                 
                 if (!form) {
                     console.warn(`Form not found in modal: ${formSelector}`);
