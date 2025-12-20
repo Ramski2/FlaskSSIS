@@ -3,9 +3,9 @@ from flask_login import login_required
 from app import models
 from app.forms import CollegeForm
 from app.utils import create_sort_list, get_page_range, search_params, create_data_list
-from . import main_bp
+from . import college_bp
 
-@main_bp.route("/college")
+@college_bp.route("/college")
 @login_required
 def college():
     form = CollegeForm()
@@ -16,7 +16,7 @@ def college():
                                table = table,
                                form=form, sort_list=sort_list)
         
-@main_bp.route("/college/table")
+@college_bp.route("/college/table")
 @login_required
 def load_colleges_filtered():
     page, per_page, search, sort, order = search_params(request, default_sort='code')
@@ -36,12 +36,12 @@ def load_colleges_filtered():
     })
 
         
-@main_bp.route("/college/add", methods=["GET", "POST"])
+@college_bp.route("/college/add", methods=["GET", "POST"])
 @login_required
 def add_clg():
     form = CollegeForm()
     
-    next_url = request.args.get('next') or url_for('main.course')
+    next_url = request.args.get('next') or url_for('course.course')
     url = "/college/add"
     
     if request.method == "POST":
@@ -65,7 +65,7 @@ def add_clg():
     else:
         return render_template('add.html', form=form, table='college', next_url=next_url, url=url)  
 
-@main_bp.route("/college/edit/<code>", methods=["GET", "PUT"])
+@college_bp.route("/college/edit/<code>", methods=["GET", "PUT"])
 @login_required
 def edit_clg(code):
     edit_data = models.College.get_specific_college(code)
@@ -86,7 +86,7 @@ def edit_clg(code):
     return render_template('includes/college_form.html', form=form, table='college')
 
 
-@main_bp.route("/college/delete/<code>", methods=["DELETE"])
+@college_bp.route("/college/delete/<code>", methods=["DELETE"])
 @login_required
 def del_clg(code):
     try:

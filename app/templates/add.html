@@ -11,7 +11,7 @@
                         <h1 class="card-title">Add Course</h1>
                         {% include "includes/program_form.html" %}
                         <div class="mb-3">
-                            <p>Didn't find the college you need? <a href="{{ url_for('main.add_clg', next=url_for('main.add_crs')) }}">Add one here</a></p>
+                            <p>Didn't find the college you need? <a href="{{ url_for('college.add_clg', next=url_for('course.add_crs')) }}">Add one here</a></p>
                         </div>
                     {% elif table == "college" %}
                         <h1 class="card-title">Add College</h1>
@@ -20,7 +20,7 @@
                         <h1 class="card-title">Add Student</h1>
                         {% include "includes/student_form.html" %}
                         <div class="mb-3">
-                            <p>Didn't find the course you need? <a href="{{ url_for('main.add_crs', next=url_for('main.add_std')) }}">Add one here</a></p>
+                            <p>Didn't find the course you need? <a href="{{ url_for('course.add_crs', next=url_for('student.add_std')) }}">Add one here</a></p>
                         </div>
                     {% endif %}
                     

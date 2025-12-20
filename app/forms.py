@@ -5,6 +5,8 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, Selec
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms.validators import Length, Email, EqualTo, DataRequired, Regexp
 
+MAX_FILE_SIZE = 5 * 1024 * 1024
+
 class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[Length(min=3, max=30), DataRequired()])
     email = StringField('Email Address', validators=[Email(), DataRequired()])
@@ -23,7 +25,6 @@ class LoginForm(FlaskForm):
 class StudentForm(FlaskForm):
     id = StringField("Student ID", validators=[DataRequired(), Length(min=9, max=9), Regexp(r'^\d{4}-\d{4}$', message="Student ID must be YYYY-NNNN (e.g. 2025-0001)")])
     image = FileField("Choose Image", validators=[
-        FileRequired(),
         FileAllowed(["jpg", "jpeg", "png", "gif"], "Images only!")
     ])
     first_name = StringField("First Name", validators=[DataRequired()])
@@ -43,6 +44,13 @@ class StudentForm(FlaskForm):
         current_year = datetime.now().year
         if year < 1968 or year > current_year:
             raise ValidationError(f"Year must be between 1968 and {current_year}")
+        
+    def validate_image(form, field):
+        if field.data:
+            file_size = len(field.data.read())
+            field.data.seek(0)
+            if file_size > MAX_FILE_SIZE:
+                raise ValidationError("File must be less than 5 MB")
     
 class ProgramForm(FlaskForm):
     code = StringField("Course Code", validators=[DataRequired()])

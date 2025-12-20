@@ -39,9 +39,15 @@ def create_app():
     
     from .user import user_bp
     from .main import main_bp
+    from .student import student_bp
+    from .course import course_bp
+    from .college import college_bp
     
     
     app.register_blueprint(user_bp)
     app.register_blueprint(main_bp)
+    app.register_blueprint(student_bp)
+    app.register_blueprint(course_bp)
+    app.register_blueprint(college_bp)
     
     return app

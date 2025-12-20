@@ -5,12 +5,12 @@ from app.forms import StudentForm
 import cloudinary
 import cloudinary.uploader
 from app.utils import create_data_list, create_sort_list, get_page_range, search_params
-from . import main_bp
+from . import student_bp
 
 DEFAULT_IMAGE_URL = "https://res.cloudinary.com/dgira6yxf/image/upload/v1765614396/dvdqkqprn0quoo0tppii.png"
 DEFAULT_PUBLIC_ID = "dvdqkqprn0quoo0tppii"
 
-@main_bp.route("/student")
+@student_bp.route("/student")
 @login_required
 def student():
     form = StudentForm()
@@ -26,7 +26,7 @@ def student():
         
    
    
-@main_bp.route("/student/table")
+@student_bp.route("/student/table")
 @login_required
 def load_students_filtered():
     page, per_page, search, sort, order = search_params(request, default_sort='id')
@@ -45,7 +45,7 @@ def load_students_filtered():
         "pagination": paging_html
     })
     
-@main_bp.route("/student/image/<id>")
+@student_bp.route("/student/image/<id>")
 @login_required
 def load_students_image(id):
     try:
@@ -57,7 +57,7 @@ def load_students_image(id):
     except Exception as e:
         return jsonify(success=False, error=str(e))
          
-@main_bp.route("/student/add", methods=["GET", "POST"])
+@student_bp.route("/student/add", methods=["GET", "POST"])
 @login_required
 def add_std():
     form = StudentForm()
@@ -72,10 +72,20 @@ def add_std():
                 if models.Student.get_specific_student(form.id.data):
                     return jsonify(success=False, error="ID number already exists."), 409
 
+                if not form.image.data:
+                    image_url = DEFAULT_IMAGE_URL
+                    public_id = DEFAULT_PUBLIC_ID
+                    
                 file = form.image.data
-                result = cloudinary.uploader.upload(file)
+                result = cloudinary.uploader.upload(
+                    file,
+                    folder="student",
+                    public_id=f"{form.id.data}",
+                    overwrite=True
+                )
                 image_url = result.get("secure_url")
                 public_id = result.get("public_id")
+                
 
                 student = models.Student(
                     form.id.data,
@@ -98,7 +108,7 @@ def add_std():
     return render_template('add.html', form=form, table='students', url="/student/add")
 
 
-@main_bp.route("/student/edit/<id>", methods=["GET", "PUT"])
+@student_bp.route("/student/edit/<id>", methods=["GET", "PUT"])
 @login_required
 def edit_std(id):
     edit_data = models.Student.get_specific_student(id)
@@ -110,15 +120,26 @@ def edit_std(id):
     crs = models.Program.get_all()
     form.submit.label.text = "Edit Student"
     form.course_code.choices = [(c['code'], f"{c['code']} - {c['name']}") for c in crs]
+    print(edit_data.get("image_url"))
     
     if request.method == "PUT":
         if form.validate_on_submit():
             try:
  
-                file = form.image.data
-                result = cloudinary.uploader.upload(file)
-                image_url = result.get("secure_url")
-                public_id = result.get("public_id")
+                if form.image.data:
+                    file = form.image.data
+                    result = cloudinary.uploader.upload(
+                        file,
+                        folder="student",
+                        public_id=f"{form.id.data}",
+                        overwrite=True
+                    )
+                    image_url = result.get("secure_url")
+                    public_id = result.get("public_id")
+                    
+                    
+                image_url = edit_data.get("image_url")
+                public_id = edit_data.get("image_public_id") 
                 
                 models.Student.update(id, form.id.data,
                                     image_url,
@@ -136,7 +157,7 @@ def edit_std(id):
 
     return render_template('includes/student_form.html', form=form, student=edit_data, table='students')
  
-@main_bp.route("/student/delete/<id>", methods=["DELETE"])
+@student_bp.route("/student/delete/<id>", methods=["DELETE"])
 @login_required
 def del_std(id):
     try:

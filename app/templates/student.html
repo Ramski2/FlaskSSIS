@@ -34,7 +34,7 @@
 {% endblock %}
 
 {% block td %}
-<tbody id="table-body" data-url="/student/table">
+<tbody id="table-body" data-url="{{url_for('student.load_students_filtered')}}">
     <tr class="align-middle">
         <td colspan="9" >
             <div class="text-muted fs-3">
@@ -58,7 +58,7 @@
                 <div class="modal-body">
                     {% include "includes/student_form.html" %}
                     <div class="mb-3">
-                        <p>Didn't find the course you need? <a href="{{ url_for('main.add_crs', next=url_for('main.student')) }}">Add one here</a></p>
+                        <p>Didn't find the course you need? <a href="{{ url_for('course.add_crs', next=url_for('student.student')) }}">Add one here</a></p>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -86,7 +86,7 @@
                     
                 </div>
                 <div class="ms-3 mb-3">
-                        <p>Didn't find the course you need? <a href="{{ url_for('main.add_crs', next=url_for('main.student')) }}">Add one here</a></p>
+                        <p>Didn't find the course you need? <a href="{{ url_for('course.add_crs', next=url_for('student.student')) }}">Add one here</a></p>
                     </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

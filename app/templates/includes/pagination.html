@@ -1,7 +1,7 @@
 {%if table == "students"%}
         {% if page > 1 %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('main.student', page=page-1, search=search, sort=sort, order=order) }}">Previous</a>
+                <a class="page-link" href="{{ url_for('course.student', page=page-1, search=search, sort=sort, order=order) }}">Previous</a>
             </li>
         {% else %}
             <li class="page-item disabled">
@@ -11,7 +11,7 @@
 
         {% if page_range[0] > 1 %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('main.student', page=1, search=search, sort=sort, order=order) }}">1</a>
+                <a class="page-link" href="{{ url_for('student.student', page=1, search=search, sort=sort, order=order) }}">1</a>
             </li>
             {% if page_range[0] > 2 %}
                 <li class="page-item disabled"><span class="page-link">…</span></li>
@@ -20,7 +20,7 @@
 
         {% for p in page_range %}
             <li class="page-item {% if p == page %}active{% endif %}">
-                <a class="page-link" href="{{ url_for('main.student', page=p, search=search, sort=sort, order=order) }}">{{ p }}</a>
+                <a class="page-link" href="{{ url_for('student.student', page=p, search=search, sort=sort, order=order) }}">{{ p }}</a>
             </li>
         {% endfor %}
 
@@ -29,13 +29,13 @@
                 <li class="page-item disabled"><span class="page-link">…</span></li>
             {% endif %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('main.student', page=total_pages, search=search, sort=sort, order=order) }}">{{ total_pages }}</a>
+                <a class="page-link" href="{{ url_for('student.student', page=total_pages, search=search, sort=sort, order=order) }}">{{ total_pages }}</a>
             </li>
         {% endif %}
 
         {% if page < total_pages %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('main.student', page=page+1, search=search, sort=sort, order=order) }}">Next</a>
+                <a class="page-link" href="{{ url_for('student.student', page=page+1, search=search, sort=sort, order=order) }}">Next</a>
             </li>
         {% else %}
             <li class="page-item disabled">
@@ -47,7 +47,7 @@
 {% if table == "program" %}
         {% if page > 1 %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('main.course', page=page-1, search=search, sort=sort, order=order) }}">Previous</a>
+                <a class="page-link" href="{{ url_for('course.course', page=page-1, search=search, sort=sort, order=order) }}">Previous</a>
             </li>
         {% else %}
             <li class="page-item disabled">
@@ -57,7 +57,7 @@
 
         {% if page_range[0] > 1 %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('main.course', page=1, search=search, sort=sort, order=order) }}">1</a>
+                <a class="page-link" href="{{ url_for('course.course', page=1, search=search, sort=sort, order=order) }}">1</a>
             </li>
             {% if page_range[0] > 2 %}
                 <li class="page-item disabled"><span class="page-link">…</span></li>
@@ -66,7 +66,7 @@
 
         {% for p in page_range %}
             <li class="page-item {% if p == page %}active{% endif %}">
-                <a class="page-link" href="{{ url_for('main.course', page=p, search=search, sort=sort, order=order) }}">{{ p }}</a>
+                <a class="page-link" href="{{ url_for('course.course', page=p, search=search, sort=sort, order=order) }}">{{ p }}</a>
             </li>
         {% endfor %}
 
@@ -75,13 +75,13 @@
                 <li class="page-item disabled"><span class="page-link">…</span></li>
             {% endif %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('main.course', page=total_pages, search=search, sort=sort, order=order) }}">{{ total_pages }}</a>
+                <a class="page-link" href="{{ url_for('course.course', page=total_pages, search=search, sort=sort, order=order) }}">{{ total_pages }}</a>
             </li>
         {% endif %}
 
         {% if page < total_pages %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('main.course', page=page+1, search=search, sort=sort, order=order) }}">Next</a>
+                <a class="page-link" href="{{ url_for('course.course', page=page+1, search=search, sort=sort, order=order) }}">Next</a>
             </li>
         {% else %}
             <li class="page-item disabled">
@@ -93,7 +93,7 @@
 {% if table == "college" %}
         {% if page > 1 %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('main.college', page=page-1, search=search, sort=sort, order=order) }}">Previous</a>
+                <a class="page-link" href="{{ url_for('college.college', page=page-1, search=search, sort=sort, order=order) }}">Previous</a>
             </li>
         {% else %}
             <li class="page-item disabled">
@@ -103,7 +103,7 @@
 
         {% if page_range[0] > 1 %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('main.college', page=1, search=search, sort=sort, order=order) }}">1</a>
+                <a class="page-link" href="{{ url_for('college.college', page=1, search=search, sort=sort, order=order) }}">1</a>
             </li>
             {% if page_range[0] > 2 %}
                 <li class="page-item disabled"><span class="page-link">…</span></li>
@@ -112,7 +112,7 @@
 
         {% for p in page_range %}
             <li class="page-item {% if p == page %}active{% endif %}">
-                <a class="page-link" href="{{ url_for('main.college', page=p, search=search, sort=sort, order=order) }}">{{ p }}</a>
+                <a class="page-link" href="{{ url_for('college.college', page=p, search=search, sort=sort, order=order) }}">{{ p }}</a>
             </li>
         {% endfor %}
 
@@ -121,13 +121,13 @@
                 <li class="page-item disabled"><span class="page-link">…</span></li>
             {% endif %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('main.college', page=total_pages, search=search, sort=sort, order=order) }}">{{ total_pages }}</a>
+                <a class="page-link" href="{{ url_for('college.college', page=total_pages, search=search, sort=sort, order=order) }}">{{ total_pages }}</a>
             </li>
         {% endif %}
 
         {% if page < total_pages %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('main.college', page=page+1, search=search, sort=sort, order=order) }}">Next</a>
+                <a class="page-link" href="{{ url_for('college.college', page=page+1, search=search, sort=sort, order=order) }}">Next</a>
             </li>
         {% else %}
             <li class="page-item disabled">

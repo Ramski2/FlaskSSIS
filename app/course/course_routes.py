@@ -3,9 +3,9 @@ from flask_login import login_required
 from app import models
 from app.forms import ProgramForm
 from app.utils import create_sort_list, get_page_range, search_params, create_data_list
-from . import main_bp
+from . import course_bp
 
-@main_bp.route("/program")
+@course_bp.route("/program")
 @login_required
 def course():
     form = ProgramForm()
@@ -19,7 +19,7 @@ def course():
                                clg_codes=clg, table = table, form=form,
                                sort_list=sort_list)
          
-@main_bp.route("/program/table")
+@course_bp.route("/program/table")
 @login_required
 def load_courses_filtered():
     page, per_page, search, sort, order = search_params(request, default_sort='code')
@@ -39,7 +39,7 @@ def load_courses_filtered():
         "pagination": paging_html
     })
 
-@main_bp.route("/program/add", methods=["GET", "POST"])
+@course_bp.route("/program/add", methods=["GET", "POST"])
 @login_required
 def add_crs():
     form = ProgramForm()
@@ -47,7 +47,7 @@ def add_crs():
     form.college_code.choices = [(c['code'], f"{c['code']} - {c['name']}") for c in clg]
 
     url = "/program/add"
-    next_url = request.args.get('next') or url_for('main.student')
+    next_url = request.args.get('next') or url_for('student.student')
     
     if request.method == "POST":
         if form.validate_on_submit():
@@ -73,7 +73,7 @@ def add_crs():
         return render_template('add.html', form=form, table='program', next_url=next_url, url=url)    
 
 
-@main_bp.route("/program/edit/<code>", methods=["PUT","GET"])
+@course_bp.route("/program/edit/<code>", methods=["PUT","GET"])
 @login_required
 def edit_crs(code):
     edit_data = models.Program.get_specific_program(code)
@@ -102,7 +102,7 @@ def edit_crs(code):
 
     return render_template('includes/program_form.html', form=form, table='program')
 
-@main_bp.route("/program/delete/<code>", methods=["DELETE"])
+@course_bp.route("/program/delete/<code>", methods=["DELETE"])
 @login_required
 def del_crs(code):
     try:

@@ -52,20 +52,3 @@ def load_colleges():
     return jsonify({
         "table": table_html
     })
-
-@main_bp.route("/test")
-def test():
-    students = models.Student.get_all()
-    courses = models.Program.get_all()
-    colleges = models.College.get_all()
-    
-    total_students = models.Student.get_count()
-    total_courses = models.Program.get_count()
-    total_colleges = models.College.get_count()
-    return render_template('test.html', stds = students, 
-                           crs = courses, 
-                           clgs = colleges,
-                           total_students = total_students,
-                           total_courses = total_courses,
-                           total_colleges = total_colleges)
-    

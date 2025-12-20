@@ -56,7 +56,7 @@
                 <div class="modal-body">
                     {% include "includes/program_form.html" %}
                     <div class="mb-3">
-                        <p>Didn't find the college you need? <a href="{{ url_for('main.add_clg', next=url_for('main.course')) }}">Add one here</a></p>
+                        <p>Didn't find the college you need? <a href="{{ url_for('college.add_clg', next=url_for('course.course')) }}">Add one here</a></p>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -85,7 +85,7 @@
                     
                 </div>
                 <div class="ms-3 mb-3">
-                    <p>Didn't find the college you need? <a href="{{ url_for('main.add_clg', next=url_for('main.course')) }}">Add one here</a></p>
+                    <p>Didn't find the college you need? <a href="{{ url_for('college.add_clg', next=url_for('course.course')) }}">Add one here</a></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
