@@ -184,7 +184,7 @@ class Student():
         return count
     
     @classmethod
-    def get_student_filtered(cls, search, sort, order, page, per_page):
+    def get_student_filtered(cls, search, sort, order, page, per_page, gender, year_lvl, course):
         conn = get_db()
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         
@@ -192,20 +192,25 @@ class Student():
         keyword = f"%{search}%"
         
         query = f"""SELECT * FROM students 
-                    WHERE CONCAT_WS(' ', id, first_name, last_name, gender, year_level, course_code) 
-                    ILIKE %s ORDER BY {sort} {order}
-                    LIMIT %s OFFSET %s
+                        WHERE gender ILIKE %s 
+                            AND year_level ILIKE %s
+                            AND course_code ILIKE %s
+                            AND CONCAT_WS(' ', id, first_name, last_name) ILIKE %s 
+                        ORDER BY {sort} {order}
+                        LIMIT %s OFFSET %s
                 """
                 
-        cur.execute(query, (keyword, per_page, offset))
+        cur.execute(query, (f"{gender}%", f"%{year_lvl}%", f"%{course}%", keyword, per_page, offset))
         data = cur.fetchall()
         
         query2 = f"""SELECT COUNT(*) FROM students
-                    WHERE CONCAT_WS(' ', id, image_url, image_public_id, first_name, last_name, gender, year_level, course_code)
-                    ILIKE %s
+                    WHERE gender ILIKE %s 
+                        AND year_level ILIKE %s
+                        AND course_code ILIKE %s
+                        AND CONCAT_WS(' ', id, first_name, last_name) ILIKE %s
                 """
                 
-        cur.execute(query2, (keyword,))
+        cur.execute(query2, (f"{gender}%", f"%{year_lvl}%", f"%{course}%", keyword))
         count = cur.fetchone()[0]
         
         cur.close()

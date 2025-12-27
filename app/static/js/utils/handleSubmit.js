@@ -58,7 +58,7 @@ export function handleFormSubmit(form, url, methods = "POST", modalInstance = nu
             Array.from(form.elements).forEach(element => {
                 element.disabled = false
             })
-            showToast("Someting went wrong: " + data.error, "danger")
+            showToast("Someting went wrong", "danger")
         }
     })
     .catch(error => showToast("Error submitting form: " + error, "danger"));

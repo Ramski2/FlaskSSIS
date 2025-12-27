@@ -1,1 +1,1 @@
-<img src="{{ std.image_url }}" alt="Student Image" class="img-thumbnail" style="width:48rem; height:48rem; object-fit:cover;">
+<img src="{{ std.image_url if std.image_url else url_for('static', filename='noimage.png') }}" alt="Student Image" class="img-thumbnail" style="width:48rem; height:48rem; object-fit:cover;">

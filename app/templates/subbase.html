@@ -14,32 +14,7 @@
             <div class="card-body">
                 <div class="row mb-3 align-items-start">
                     <div class="col-md-7 col-12">
-                        <form role="search" method="get" class="d-flex align-items-center flex-nowrap gap-2">
-                            <div class="input-group flex-grow-1 flex-wrap">
-                                <input
-                                    name="search"
-                                    class="form-control flex-grow-1"
-                                    type="search"
-                                    placeholder="Search..."
-                                    aria-label="Search"
-                                    style="min-width: 15rem;"
-                                >
-                                <select class="form-select w-auto" id="sort" name="sort">
-                                    {% for sort_key, sort_name in sort_list %}
-                                        <option value="{{ sort_key }}">{{ sort_name }}</option>
-                                    {% endfor %}
-                                </select>
-
-                                <select class="form-select w-auto"  id="order" name="order">
-                                    <option value="asc">Ascending</option>
-                                    <option value="desc">Descending</option>
-                                </select>
-                            </div>
-
-                            <button type="submit" class="btn btn-success">
-                                Search
-                            </button>
-                        </form>
+                        {% include "includes/search_form.html" %}
                     </div>
 
                     <!-- Always push to the far right -->

@@ -1,13 +1,25 @@
 from flask import request
 from app.forms import SearchForm
 
-def search_params(request, default_sort='id'):
+def search_params(request, default_sort='code'):
+    print(default_sort)
     page = request.args.get('page', 1, type=int)
     per_page = 10
     search = request.args.get('search', '')
     sort = request.args.get('sort', default_sort)
     order = request.args.get('order', 'asc')
     return page, per_page, search, sort, order
+
+def student_search_params(request, default_sort='id'):
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+    search = request.args.get('search', '')
+    gender = request.args.get('gender_filter', '')
+    year_lvl = request.args.get('year_lvl_filter', '')
+    course = request.args.get('course_filter', '')
+    sort = request.args.get('sort', default_sort)
+    order = request.args.get('order', 'asc')
+    return page, per_page, search, sort, order, gender, year_lvl, course
 
 def get_page_range(page, per_page, total, range_size=3):
     if total == 0:

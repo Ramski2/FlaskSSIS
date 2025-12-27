@@ -5,7 +5,7 @@
             <label>Current Image</label>
             <div>
                 <img id="imagePreview" 
-                    src="{{ student.image_url if student else '/static/noimage.png' }}" 
+                    src="{{ image_url if image_url else url_for('static', filename='noimage.png') }}" 
                     alt="Student Image" 
                     class="image-thumbnail"
                     style="width:150px; height:150px; object-fit:cover;">

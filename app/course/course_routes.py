@@ -23,7 +23,6 @@ def course():
 @login_required
 def load_courses_filtered():
     page, per_page, search, sort, order = search_params(request, default_sort='code')
-
     courses, total = models.Program.get_program_filtered(search, sort, order, page, per_page)
     page_range, total_pages = get_page_range(page, per_page, total)
     
