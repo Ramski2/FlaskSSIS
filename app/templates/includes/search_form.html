@@ -1,50 +1,53 @@
 
 {% if table == "students" %}
-<form role="search" method="get" class="d-flex align-items-center flex-nowrap gap-2">
-    <div class="input-group flex-grow-1 flex-wrap">
-        <input
-            name="search"
-            class="form-control flex-grow-1"
-            type="search"
-            placeholder="Search..."
-            aria-label="Search"
-            style="min-width: 15rem;"
-        >
-        <select class="form-select w-auto" name="gender_filter" id="gender_filter">
-            <option value="">Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-            <option value="Rather not say">Rather not say</option>
-        </select>
+<form role="search" method="get" class="align-items-center d-flex gap-2">
+    <div>
+        <div class="input-group flex-grow-1 flex-wrap mb-1">
+            <input
+                name="search"
+                class="form-control flex-grow-1"
+                type="search"
+                placeholder="Search..."
+                aria-label="Search"
+                style="min-width: 15rem;"
+            >
+            <select class="form-select w-auto" name="gender_filter" id="gender_filter">
+                <option value="">All Genders</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+                <option value="Rather not say">Rather not say</option>
+            </select>
 
-        <select class="form-select w-auto"  id="year_lvl_filter" name="year_lvl_filter">
-            <option value="">Year Level</option>
-            {% for i in range(1, 5) %}
-            <option value="{{i}}">{{i}}</option>
-            {% endfor %}
-        </select>
+            <select class="form-select w-auto"  id="year_lvl_filter" name="year_lvl_filter">
+                <option value="">All Year Levels</option>
+                {% for i in range(1, 5) %}
+                <option value="{{i}}">{{i}}</option>
+                {% endfor %}
+            </select>
 
-        <select class="form-select w-auto"  id="course_filter" name="course_filter">
-            <option value="">Course</option>
-            {% for i in crs_codes %}
-            <option value="{{i.code}}">{{i.code}}</option>
-            {% endfor %}
-        </select>
+            <select class="form-select w-auto"  id="course_filter" name="course_filter">
+                <option value="">All Courses</option>
+                {% for i in crs_codes %}
+                <option value="{{i.code}}">{{i.code}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="input-group">
+            <select class="form-select w-auto" id="sort" name="sort">
+                <option value="id">Sort By Default</option>
+                {% for sort_key, sort_name in sort_list %}
+                    <option value="{{ sort_key }}">{{ sort_name }}</option>
+                {% endfor %}
+            </select>
 
-        <select class="form-select w-auto" id="sort" name="sort">
-            <option value="id">Sort By</option>
-            {% for sort_key, sort_name in sort_list %}
-                <option value="{{ sort_key }}">{{ sort_name }}</option>
-            {% endfor %}
-        </select>
-
-        <select class="form-select w-auto"  id="order" name="order">
-            <option value="asc">Order By</option>
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
-        </select>
+            <select class="form-select w-auto"  id="order" name="order">
+                <option value="asc">Ascending</option>
+                <option value="desc">Descending</option>
+            </select>
+        </div>
     </div>
+    
     <button type="submit" class="btn btn-success">
         Search
     </button>
