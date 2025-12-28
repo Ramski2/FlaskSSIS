@@ -1,3 +1,5 @@
+import { showToast } from "./toast.js";
+
 export function fetchTable(queryParams, tableBodySelector="#table-body", paginationSelector = ".pagination") {
     const tableBody = document.querySelector(tableBodySelector);
     const pagination = document.querySelector(paginationSelector);
@@ -36,5 +38,6 @@ export function fetchTable(queryParams, tableBodySelector="#table-body", paginat
     })
     .catch(err => {
         console.error("Error loading table: ", err)
+        showToast("Error loading table", "danger")
     })
 }

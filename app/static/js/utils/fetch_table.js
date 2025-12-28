@@ -1,3 +1,5 @@
+import { showToast } from "./toast.js";
+
 document.addEventListener("DOMContentLoaded", () => {
     function fetch_Table(tableBodySelector="#table-body", table) {
         const tableBody = document.querySelectorAll(tableBodySelector);
@@ -29,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .catch(err => {
                 console.error("Error loading table: ", err)
+                showToast("Error loading table: " + err, "danger")
             })
         })
     }

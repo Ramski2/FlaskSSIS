@@ -1,3 +1,5 @@
+import { showToast } from "./toast.js";
+
 document.addEventListener("DOMContentLoaded", () => {
     function editModal(modalSelector = "#showImage") {
         const modalElement = document.querySelector(modalSelector);
@@ -24,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log('changed');
             }) 
             .catch(e => {
-                alert("Something went wrong: " + e, "danger")
+                showToast("Something went wrong: " + e, "danger")
             })
         });
     }

@@ -21,10 +21,16 @@ export function handleFormSubmit(form, url, methods = "POST", modalInstance = nu
     .then(data => {
         if (data.success) {
             form.reset();
-            showToast(data.message, "success");
+
+            sessionStorage.setItem("toast", JSON.stringify({
+                message: data.message,
+                type: "success"
+            }));
+
             Array.from(form.elements).forEach(element => {
                 element.disabled = false
             })
+            
             if(modalInstance?.hide){
                 modalInstance.hide();
                 const searchForm = document.querySelector("form[role='search']");
@@ -41,6 +47,7 @@ export function handleFormSubmit(form, url, methods = "POST", modalInstance = nu
             Array.from(form.elements).forEach(element => {
                 element.disabled = false
             })
+            
         } else if (data.errors) {
             Array.from(form.elements).forEach(element => {
                 element.disabled = false
@@ -59,7 +66,16 @@ export function handleFormSubmit(form, url, methods = "POST", modalInstance = nu
                 element.disabled = false
             })
             showToast("Someting went wrong", "danger")
+            sessionStorage.setItem("toast", JSON.stringify({
+                message: "Something went wrong",
+                type: "success"
+            }));
         }
     })
-    .catch(error => showToast("Error submitting form: " + error, "danger"));
+    .catch(error => {
+        sessionStorage.setItem("toast", JSON.stringify({
+                message: "Error submitting form: " + error,
+                type: "danger"
+        }))
+    });
 }
