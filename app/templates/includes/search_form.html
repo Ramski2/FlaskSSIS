@@ -28,6 +28,7 @@
 
             <select class="form-select w-auto"  id="course_filter" name="course_filter">
                 <option value="">All Courses</option>
+                <option value="__NULL__">None</option>
                 {% for i in crs_codes %}
                 <option value="{{i.code}}">{{i.code}}</option>
                 {% endfor %}

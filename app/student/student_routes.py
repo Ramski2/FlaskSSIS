@@ -123,7 +123,14 @@ def edit_std(id):
     if request.method == "PUT":
         if form.validate_on_submit():
             try:
- 
+                if models.Student.exists(
+                        id=form.id.data,
+                        exclude_id=id,
+                    ):
+                        errors = {}
+                        errors["id"] = ["Student ID already exists."] if form.id.data != id else []
+                        return jsonify(success=False, errors=errors), 400
+                    
                 if form.image.data:
                     file = form.image.data
                     result = cloudinary.uploader.upload(

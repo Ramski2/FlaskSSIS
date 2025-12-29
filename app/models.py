@@ -189,32 +189,97 @@ class Student():
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         
         offset = (page - 1) * per_page
-        keyword = f"%{search}%"
+        keyword = f"%{search}%" if search else "%"
+
+        gender = gender or None
+        year_lvl = year_lvl or None
+        course = course or None
         
-        query = f"""SELECT * FROM students 
-                        WHERE gender ILIKE %s 
-                            AND year_level ILIKE %s
-                            AND course_code ILIKE %s
-                            AND CONCAT_WS(' ', id, first_name, last_name) ILIKE %s 
-                        ORDER BY {sort} {order}
-                        LIMIT %s OFFSET %s
+        if course == "__NULL__":
+            query = f"""SELECT * FROM students
+                    WHERE (%s IS NULL OR gender ILIKE %s)
+                        AND (%s IS NULL OR year_level ILIKE %s)
+                        AND course_code IS NULL
+                        AND CONCAT_WS(' ', id, first_name, last_name) ILIKE %s
+                    ORDER BY {sort} {order}
+                    LIMIT %s OFFSET %s;
                 """
+            params = (
+                gender, f"{gender}%" if gender else None,
+                year_lvl, f"%{year_lvl}%" if year_lvl else None,
+                keyword,
+                per_page, offset
+            )
                 
-        cur.execute(query, (f"{gender}%", f"%{year_lvl}%", f"%{course}%", keyword, per_page, offset))
-        data = cur.fetchall()
-        
-        query2 = f"""SELECT COUNT(*) FROM students
-                    WHERE gender ILIKE %s 
-                        AND year_level ILIKE %s
-                        AND course_code ILIKE %s
+            cur.execute(query, params)
+            data = cur.fetchall()
+                
+            query2 = f"""SELECT COUNT(*) FROM students
+                    WHERE (%s IS NULL OR gender ILIKE %s)
+                        AND (%s IS NULL OR year_level ILIKE %s)
+                        AND course_code IS NULL
                         AND CONCAT_WS(' ', id, first_name, last_name) ILIKE %s
                 """
-                
-        cur.execute(query2, (f"{gender}%", f"%{year_lvl}%", f"%{course}%", keyword))
-        count = cur.fetchone()[0]
+            
+            cur.execute(query2, 
+                    (gender, f"{gender}%" if gender else None,
+                        year_lvl, f"%{year_lvl}%" if year_lvl else None,
+                        keyword))
+            count = cur.fetchone()[0]
+            
+        else:
+            query = f"""SELECT * FROM students
+                        WHERE (%s IS NULL OR gender ILIKE %s)
+                            AND (%s IS NULL OR year_level ILIKE %s)
+                            AND (%s IS NULL OR course_code ILIKE %s)
+                            AND CONCAT_WS(' ', id, first_name, last_name) ILIKE %s
+                        ORDER BY {sort} {order}
+                        LIMIT %s OFFSET %s;
+                    """
+                    
+            params = (
+                gender, f"{gender}%" if gender else None,
+                year_lvl, f"%{year_lvl}%" if year_lvl else None,
+                course, f"%{course}%" if course else None,
+                keyword,
+                per_page, offset
+            )
+            cur.execute(query, params)
+            data = cur.fetchall()
+            
+            query2 = f"""SELECT COUNT(*) FROM students
+                        WHERE (%s IS NULL OR gender ILIKE %s)
+                            AND (%s IS NULL OR year_level ILIKE %s)
+                            AND (%s IS NULL OR course_code ILIKE %s)
+                            AND CONCAT_WS(' ', id, first_name, last_name) ILIKE %s
+                    """
+                    
+            cur.execute(query2, 
+                        (gender, f"{gender}%" if gender else None,
+                            year_lvl, f"%{year_lvl}%" if year_lvl else None,
+                            course, f"%{course}%" if course else None,
+                            keyword))
+            count = cur.fetchone()[0]
         
         cur.close()
         return data, count
+    
+    @staticmethod
+    def exists(id=None, exclude_id=None):
+        conn = get_db()
+        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+        query = "SELECT * FROM students WHERE (id=%s)"
+        params = [id]
+
+        if exclude_id:
+            query += " AND id != %s"
+            params.append(exclude_id)
+
+        cur.execute(query, params)
+        result = cur.fetchone()
+        cur.close()
+        return result is not None
     
     @classmethod
     def get_specific_student(cls, id):
@@ -323,6 +388,24 @@ class Program():
         cur.close()
         return data, count
     
+    @staticmethod
+    def exists(code=None, name=None, exclude_code=None, exclude_name=None):
+        conn = get_db()
+        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+        query = "SELECT * FROM program WHERE (code=%s OR name=%s)"
+        params = [code, name]
+
+        if exclude_code and exclude_name:
+            query += " AND code != %s AND name != %s"
+            params.append(exclude_code)
+            params.append(exclude_name)
+
+        cur.execute(query, params)
+        result = cur.fetchone()
+        cur.close()
+        return result is not None
+    
     @classmethod
     def get_specific_program(cls, code):
         conn = get_db()
@@ -420,6 +503,24 @@ class College():
         
         cur.close()
         return data, count
+    
+    @staticmethod
+    def exists(code=None, name=None, exclude_code=None, exclude_name=None):
+        conn = get_db()
+        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+        query = "SELECT * FROM college WHERE (code=%s OR name=%s)"
+        params = [code, name]
+
+        if exclude_code and exclude_name:
+            query += " AND code != %s AND name != %s"
+            params.append(exclude_code)
+            params.append(exclude_name)
+
+        cur.execute(query, params)
+        result = cur.fetchone()
+        cur.close()
+        return result is not None
     
     @classmethod
     def get_specific_college(cls, code):

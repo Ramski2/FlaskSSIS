@@ -75,6 +75,17 @@ def edit_clg(code):
     if request.method == "PUT":
         if form.validate_on_submit():
             try:
+                if models.College.exists(
+                        code=form.code.data,
+                        name=form.name.data,
+                        exclude_code=code,
+                        exclude_name=edit_data.get("name")
+                    ):
+                        errors = {}
+                        errors["code"] = ["Code already exists."] if form.code.data != code else []
+                        errors["name"] = ["Name already exists."] if form.name.data != edit_data.get("name") else []
+                        return jsonify(success=False, errors=errors), 400
+                    
                 models.College.update(code, form.code.data, form.name.data)
                 
                 return jsonify(success=True, message="College updated successfully!")

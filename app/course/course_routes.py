@@ -84,15 +84,19 @@ def edit_crs(code):
     if request.method == "PUT":
         if form.validate_on_submit():  
             try:
-                existing_code = models.Program.get_specific_program(form.code.data)
-                if existing_code:
-                    return jsonify(success=False, error="Course Code already exists."), 409
-                
-                existing_name = models.Program.get_specific_program_name(form.name.data)
-                if existing_name:
-                    return jsonify(success=False, error="Course name already exists."), 409
-                
+                if models.Program.exists(
+                        code=form.code.data,
+                        name=form.name.data,
+                        exclude_code=code,
+                        exclude_name=edit_data.get("name")
+                    ):
+                        errors = {}
+                        errors["code"] = ["Code already exists."] if form.code.data != code else []
+                        errors["name"] = ["Name already exists."] if form.name.data != edit_data.get("name") else []
+                        return jsonify(success=False, errors=errors), 400
+                    
                 models.Program.update(code, form.code.data, form.name.data, form.college_code.data)
+                
                 return jsonify(success=True, message="Course updated successfully!")
             except Exception as e:
                 return jsonify(success=False, error=str(e)), 500
