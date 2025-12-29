@@ -47,7 +47,7 @@ export function handleFormSubmit(form, url, methods = "POST", modalInstance = nu
             Array.from(form.elements).forEach(element => {
                 element.disabled = false
             })
-            
+            showToast(data.message, "success")
         } else if (data.errors) {
             Array.from(form.elements).forEach(element => {
                 element.disabled = false
@@ -68,7 +68,7 @@ export function handleFormSubmit(form, url, methods = "POST", modalInstance = nu
             showToast("Someting went wrong", "danger")
             sessionStorage.setItem("toast", JSON.stringify({
                 message: "Something went wrong",
-                type: "success"
+                type: "danger"
             }));
         }
     })
