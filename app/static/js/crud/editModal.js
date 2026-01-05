@@ -1,4 +1,5 @@
 import { handleFormSubmit } from "../utils/handleSubmit.js";
+import { showToast } from "../utils/toast.js";
 
 export function editModal(modalSelector= "#editModal") {
     const modalElement = document.querySelector(modalSelector);
@@ -23,6 +24,10 @@ export function editModal(modalSelector= "#editModal") {
             modalTitle.textContent = name;
             console.log(`Opening modal for URL: ${url}, Form: ${formSelector}`);
 
+            
+
+            
+
             fetch(url)
             .then(response => {
                 if(!response.ok) throw new Error("Failed to load form");
@@ -32,35 +37,42 @@ export function editModal(modalSelector= "#editModal") {
                 container.innerHTML = html;
                 console.log('changed');
 
-                
                 const form = modalElement.querySelector(formSelector); 
-                const fileInput = form.querySelector("#imageInput");
-                const preview = form.querySelector("#imagePreview");
-
-                if (fileInput && preview) {
-                    const originalSrc = preview.src;
-                    fileInput.addEventListener("change", function () {
-                        const file = this.files[0];
-                        if (!file) {
-                            preview.src = originalSrc;
-                            return;
-                        }
-                        if (!file.type.startsWith("image/")) {
-                            alert("Please select an image file");
-                            this.value = "";
-                            preview.src = originalSrc;
-                            return;
-                        }
-                        const objectUrl = URL.createObjectURL(file);
-                        preview.src = objectUrl;
-                        preview.onload = () => URL.revokeObjectURL(objectUrl);
-                    });
-                }
                 
                 if (!form) {
                     console.warn(`Form not found in modal: ${formSelector}`);
                 return;
                 }
+
+                const imageInput = form.querySelector("#imageInput");
+                const imagePreview = form.querySelector("#imagePreview");
+
+                imageInput.addEventListener("change", function () {
+                    const file = this.files[0];
+                    const maxSizeBytes = 5 * 1024 * 1024;
+
+                    if (!file) return;
+
+                    if (!file.type.startsWith("image/")) {
+                        showToast("Only image files are allowed.", "danger");
+
+                        this.value = ""; // clear file input
+                        imagePreview.src = "/static/noimage.png";
+                        return;
+                    }
+                    if  (file.size > maxSizeBytes) {
+                        showToast("Image exceeds max valid size. (5mb)", "danger")
+                        this.value = ""; // clear file input
+                        imagePreview.src = "/static/noimage.png";
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        imagePreview.src = reader.result;
+                    };
+                    reader.readAsDataURL(file);
+                });
 
                 const modalInstance = bootstrap.Modal.getOrCreateInstance(modalElement);
 

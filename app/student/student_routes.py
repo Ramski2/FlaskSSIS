@@ -70,7 +70,9 @@ def add_std():
         if form.validate_on_submit():
             try:
                 if models.Student.get_specific_student(form.id.data):
-                    return jsonify(success=False, error="ID number already exists."), 409
+                    errors = {}
+                    errors["id"] = ["Student ID already exists."]
+                    return jsonify(success=False, errors=errors), 409
 
                 if form.image.data:
                     file = form.image.data

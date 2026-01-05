@@ -117,30 +117,38 @@
 {% endblock %}
 
 {% block script %}
-    <script>
-        const fileInput = document.getElementById("imageInput");
-        const preview = document.getElementById("imagePreview");
-        const originalSrc = preview.src;
+    <script type="module">
+        import { showToast } from "/static/js/utils/toast.js";
 
-        fileInput.addEventListener("change", function () {
+        const imageInput = document.getElementById("imageInput");
+        const imagePreview = document.getElementById("imagePreview");
+
+        imageInput.addEventListener("change", function () {
             const file = this.files[0];
+            const maxSizeBytes = 5 * 1024 * 1024;
 
-            if (!file) {
-                preview.src = originalSrc;
-                return;
-            }
+            if (!file) return;
 
             if (!file.type.startsWith("image/")) {
-                alert("Please select an image file");
-                this.value = "";
-                preview.src = originalSrc;
+                showToast("Only image files are allowed.", "danger");
+
+                this.value = ""; // clear file input
+                imagePreview.src = "/static/noimage.png";
                 return;
             }
 
-            const objectUrl = URL.createObjectURL(file);
-            preview.src = objectUrl;
+            if  (file.size > maxSizeBytes) {
+                showToast("Image exceeds max valid size. (5mb)", "danger")
+                this.value = ""; // clear file input
+                imagePreview.src = "/static/noimage.png";
+                return;
+            }
 
-            preview.onload = () => URL.revokeObjectURL(objectUrl);
+            const reader = new FileReader();
+            reader.onload = () => {
+                imagePreview.src = reader.result;
+            };
+            reader.readAsDataURL(file);
         });
     </script>
 <script type="module" src="{{ url_for('static', filename='js/utils/showImage.js') }}"></script>

@@ -49,11 +49,16 @@ def add_clg():
             try:
                 existing_code = models.College.get_specific_college(form.code.data)
                 if existing_code:
-                    return jsonify(success=False, error="College Code already exists."), 409
+                    errors = {}
+                    errors["code"] = ["Course Code already exists."]
+                    errors["name"] = ["Course Name already exists."] if form.name.data == existing_code.get("name") else []
+                    return jsonify(success=False, errors=errors), 409
                 
                 existing_name = models.College.get_specific_college_name(form.name.data)
                 if existing_name:
-                    return jsonify(success=False, error="College name already exists."), 409
+                    errors = {}
+                    errors["name"] = ["Course Name already exists."]
+                    return jsonify(success=False, errors=errors), 409
                 
                 college = models.College(form.code.data, form.name.data)
                 college.add()
@@ -82,9 +87,9 @@ def edit_clg(code):
                         exclude_name=edit_data.get("name")
                     ):
                         errors = {}
-                        errors["code"] = ["Code already exists."] if form.code.data != code else []
-                        errors["name"] = ["Name already exists."] if form.name.data != edit_data.get("name") else []
-                        return jsonify(success=False, errors=errors), 400
+                        errors["code"] = ["College Code already exists."] if form.code.data != code else []
+                        errors["name"] = ["College Name already exists."] if form.name.data != edit_data.get("name") else []
+                        return jsonify(success=False, errors=errors), 409
                     
                 models.College.update(code, form.code.data, form.name.data)
                 

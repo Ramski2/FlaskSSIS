@@ -13,6 +13,7 @@ export function handleFormSubmit(form, url, methods = "POST", modalInstance = nu
     const existingErrors = form.querySelectorAll(".text-danger.mt-1");
     existingErrors.forEach(el => el.remove());
 
+    
     fetch(url, {
         method: methods,
         body: formData,
@@ -49,6 +50,7 @@ export function handleFormSubmit(form, url, methods = "POST", modalInstance = nu
             })
             showToast(data.message, "success")
         } else if (data.errors) {
+            
             Array.from(form.elements).forEach(element => {
                 element.disabled = false
             })
@@ -65,9 +67,9 @@ export function handleFormSubmit(form, url, methods = "POST", modalInstance = nu
             Array.from(form.elements).forEach(element => {
                 element.disabled = false
             })
-            showToast("Someting went wrong", "danger")
+            showToast("Someting went wrong:" + data.error, "danger")
             sessionStorage.setItem("toast", JSON.stringify({
-                message: "Something went wrong",
+                message: "Something went wrong: " + data.error,
                 type: "danger"
             }));
         }
